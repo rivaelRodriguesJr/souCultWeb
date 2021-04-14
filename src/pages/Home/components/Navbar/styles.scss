@@ -1,0 +1,75 @@
+.main-nav {
+  height: 120px;
+  align-items: center;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.main-menu {
+  display: flex;  
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+  list-style-type: none;
+
+
+  li:nth-child(2) {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+}
+
+.nav-link {
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+
+  /*  sea-blue-2 */
+  color: #0D9CA4;
+
+  &.active {
+    font-weight: 700;
+    color: #0D9CA4;
+  }
+
+  &:hover {   
+    font-weight: 700;
+    color: #0D9CA4;
+  }
+}
+
+.main-logo-img {
+  width: 89px;
+  height: 79px;
+}
+
+.main-login-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  cursor: pointer;
+
+  /*  sea-blue-2 */
+  color: #0D9CA4;
+
+  &.active {
+    font-weight: 700;
+    color: #0D9CA4;
+  }
+
+  &:hover {   
+    font-weight: 700;
+    color: #0D9CA4;
+  }
+}

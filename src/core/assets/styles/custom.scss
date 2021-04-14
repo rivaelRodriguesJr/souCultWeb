@@ -1,9 +1,18 @@
 $theme-colors: (
-  "primary": #407BFF,
-  "secondary": #E1E1E1
+  "yellow": #FCBB15,
+  "orange-1": #FD7F17,
+  "black": #000000,
+  "sea-blue-1": #43ABAE,
+  "sea-blue-2": #0D9CA4,
+  "orange-2": #FE8C12,
+  "orange-3": #FE7210,
+  "gray": #EEEAEB,
+  "white": #FFFFFF,
+  "orange-4": #FAAB56
 );
 
-$body-bg: #F2F2F2;
-$body-color: #263238;
+$body-bg: #FFF;
+$body-color: #000;
 
 @import '~bootstrap/scss/bootstrap.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
