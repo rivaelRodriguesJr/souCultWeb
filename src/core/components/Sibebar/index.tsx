@@ -26,7 +26,7 @@ const Sidebar = ({ routes }: Props) => (
       ))}
     </ul>
     <div className="sidebar-logout-container">
-      <p className="sidebar-logout-text">Sair</p>
+      <a href="/" className="sidebar-logout-text">Sair</a>
     </div>
   </nav>
 );

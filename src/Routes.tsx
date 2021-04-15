@@ -1,3 +1,4 @@
+import Company from 'pages/Company';
 import CulturalCompany from 'pages/CulturalCompany';
 import Home from 'pages/Home';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
@@ -13,6 +14,10 @@ const Routes = () => (
       <Redirect from="/cultural-company" to="/cultural-company/events" exact />
       <Route path="/cultural-company">
         <CulturalCompany />
+      </Route>
+      <Redirect from="/company" to="/company/users" exact />
+      <Route path="/company">
+        <Company />
       </Route>
     </Switch>
   </Router>

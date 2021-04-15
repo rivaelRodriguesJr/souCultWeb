@@ -32,7 +32,7 @@ const Navbar = () => {
       </div>
       <div className="col-2 main-menu-login-container">
       <NavLink to="/cultural-company" className="nav-link">
-        <h6 className="text-start main-login-text">Bem-vindo!<br/>Entre ou cadastra-se</h6>
+        <h6 className="text-start main-login-text">Bem-vindo!<br/>Entre ou cadastre-se</h6>
       </NavLink>
       </div>
     </nav>
