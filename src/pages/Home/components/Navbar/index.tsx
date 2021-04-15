@@ -31,7 +31,9 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="col-2 main-menu-login-container">
-        <h6 className="text-start main-login-text">Bem-vindo! <br/>Entre ou cadastra-se</h6>
+      <NavLink to="/cultural-company" className="nav-link">
+        <h6 className="text-start main-login-text">Bem-vindo!<br/>Entre ou cadastra-se</h6>
+      </NavLink>
       </div>
     </nav>
   );
