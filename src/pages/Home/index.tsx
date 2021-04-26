@@ -1,6 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import  Index from './components/Home';
+import Index from './components/Home';
 
 const Home = () => (
   <>

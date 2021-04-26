@@ -1,9 +1,21 @@
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import './styles.scss';
+
 import mainLogo from 'core/assets/images/logo.png';
 
+import LoginModal from '../LoginModal';
+
+import './styles.scss';
 
 const Navbar = () => {
+
+  const [modalShow, setModalShow] = useState(false);
+
+
+  useEffect(() => {
+    console.log('Iniciou!');
+  }, []);
+
   return (
     <nav className="row bg-gray main-nav">
       <div className="col-1">
@@ -31,10 +43,14 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="col-2 main-menu-login-container">
-      <NavLink to="/cultural-company" className="nav-link">
-        <h6 className="text-start main-login-text">Bem-vindo!<br/>Entre ou cadastre-se</h6>
-      </NavLink>
+        <a href="#/login" className="nav-link" onClick={() => setModalShow(true)}>
+          <h6 className="text-start main-login-text">Bem-vindo!<br />Entre ou cadastre-se</h6>
+        </a>
       </div>
+      <LoginModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </nav>
   );
 }
