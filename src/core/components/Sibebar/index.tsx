@@ -1,6 +1,6 @@
 import mainLogo from 'core/assets/images/logo.png';
-import {Route} from 'core/models/Route';
-import { NavLink } from "react-router-dom";
+import { Route } from 'core/models/Route';
+import { Link, NavLink } from "react-router-dom";
 import './styles.scss';
 
 type Props = {
@@ -14,15 +14,17 @@ const Sidebar = ({ routes }: Props) => (
     </div>
     <ul className="sidebar-nav-content">
       {routes.map((route, index) => (
-        <li>
-          <NavLink key={index} className="sidebar-nav-item" to={route.path}>
+        <li key={index}>
+          <NavLink className="sidebar-nav-item" to={route.path}>
             {route.name}
           </NavLink>
         </li>
       ))}
     </ul>
     <div className="sidebar-logout-container">
-      <a href="/" className="sidebar-logout-text">Sair</a>
+      <Link to="/" className="sidebar-logout-text">
+        Sair
+      </Link>
     </div>
   </nav>
 );

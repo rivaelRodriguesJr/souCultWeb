@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 
 import './styles.scss';
 
@@ -17,9 +18,11 @@ type FormState = {
 
 const LoginModal = ({ show, onHide }: Props) => {
   const { register, handleSubmit, formState: { errors }  } = useForm<FormState>();
+  const history = useHistory();
 
   const onSubmit = (data: FormState) => {
-    console.log(data);
+    // console.log(data);
+    history.push('/cultural-company');
   }
 
   return (
