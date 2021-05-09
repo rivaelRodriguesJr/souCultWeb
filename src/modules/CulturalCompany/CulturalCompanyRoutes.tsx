@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 
 import CheckIn from './pages/CheckIn';
 import Events from './pages/Events';
-import Profile from './pages/Profile/';
+import Users from './pages/Users';
 
 import './styles.scss';
 
@@ -23,7 +23,7 @@ const CulturalCompanyRoutes = () => (
     <Route path="/cultural-company/users">
       <BaseContainer title="Administradores">
       </BaseContainer>
-      <Profile/>
+      <Users/>
     </Route>
   
   </Switch>

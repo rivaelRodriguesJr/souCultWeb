@@ -12,7 +12,7 @@ import { User } from 'core/models/User';
 
 
 
-const Profile = () => {
+const Users = () => {
 
   const [profile, setProfile] = useState<User>({} as User)
   
@@ -165,4 +165,4 @@ const Profile = () => {
 
   );
 }
-  export default Profile;
+  export default Users;
