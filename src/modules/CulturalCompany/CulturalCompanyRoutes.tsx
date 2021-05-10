@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router';
 import CheckIn from './pages/CheckIn';
 import Events from './pages/Events';
 import NewEvent from './pages/NewEvent';
+import Users from './pages/Users';
 
 import './styles.scss';
 
@@ -25,9 +26,10 @@ const CulturalCompanyRoutes = () => (
     </Route>
     <Route path="/cultural-company/users">
       <BaseContainer title="Administradores">
-        <h2>Administradores</h2>
       </BaseContainer>
+      <Users/>
     </Route>
+  
   </Switch>
 )
 
