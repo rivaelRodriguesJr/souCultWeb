@@ -1,21 +1,19 @@
 .container {
- margin-top: 50px;
+  margin-top: 50px;
+  width: 100%;
 }
 
 .filter {
   align-items: left;
   align-content: left;
   text-align: center;
-  width: 100%; 
-  min-width: 200px;
   height: 100%;
-  max-height: 100%;
   background-color: #EEEAEB;
   border-radius: 10px;
   padding-right:40px;
   padding-left: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   margin: 0%;
 }
 
@@ -24,7 +22,7 @@
   color: #FFFFFF;
   margin-bottom: 2%;
   margin-top: 2%;
-  width: 150px;
+  width: 100%;
 }
 
 .row {
@@ -32,8 +30,3 @@
   margin-top: 2%;
 }
 
-.newOrder {
-  text-align: right;
-  margin: 40px;
-  font-weight: bold;
-}

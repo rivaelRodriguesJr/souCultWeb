@@ -18,7 +18,7 @@ const routes: Route[] = [
   }, {
     name: 'Administradores',
     path: '/cultural-company/users'
-  },
+  }
 ];
 
 const CulturalCompany = () => {

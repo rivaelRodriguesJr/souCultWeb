@@ -1,7 +1,7 @@
 import React from "react";
 import './styles.scss';
 
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col, Table } from 'react-bootstrap';
 
 class Filter extends React.Component {
   constructor(props: any) {
@@ -16,7 +16,7 @@ class Filter extends React.Component {
       <>
         <div className="container">
           <Form className="filter">
-            <Form.Group as={Row} className = "row">
+            <Form.Group as={Row} className="row">
               <Form.Label column sm="2">
                 Novo evento:
               </Form.Label>
@@ -45,7 +45,7 @@ class Filter extends React.Component {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className = "row">
+            <Form.Group as={Row} className="row">
               <Form.Label column sm="2">
                 Status:
               </Form.Label>
@@ -58,8 +58,8 @@ class Filter extends React.Component {
                   <option>5</option>
                 </Form.Control>
               </Col>
-              <Col sm ="2"/>
-              <Col sm ="2"/>
+              <Col sm="2" />
+              <Col sm="2" />
               <Col sm="2">
                 <Button className="button" variant="sea-blue-1">Buscar</Button>
               </Col>
@@ -69,10 +69,6 @@ class Filter extends React.Component {
             </Form.Group>
           </Form>
         </div>
-        <div className = "newOrder">
-          <label>Novo evento</label>
-        </div>
-       
       </>
     );
   }
