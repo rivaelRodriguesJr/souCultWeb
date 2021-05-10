@@ -9,9 +9,14 @@ td {
     text-align: center;
 }
 
-h1{
+.h1-adm-page{
     padding-top: 25px;
     padding-bottom: 25px;
+    color: #0D9CA4;
+    font-size: 24px;
+    font-weight: bolder;
+    
+
 }
 
 #add-user-row{
@@ -38,6 +43,8 @@ h1{
 
 #search-button{
     width: 130px;
+    background: #0D9CA4;
+    border-color: #0D9CA4;
 }
 
 #user-list-div{

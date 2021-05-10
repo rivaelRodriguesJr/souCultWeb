@@ -32,7 +32,7 @@ const Users = () => {
   return(
 
     <section>
-      <h1>Perfil</h1>
+      <h1 className="h1-adm-page">Perfil</h1>
 
     <Form>
       <Form.Row className="profile-row">
@@ -74,7 +74,7 @@ const Users = () => {
 
     </Form>
 
-    <h1>Lista de usuários</h1>
+    <h1 className="h1-adm-page">Lista de usuários</h1>
 
     <div id="user-list-div" className="user-list-div">
       <section id="search-adm-users">
@@ -99,7 +99,7 @@ const Users = () => {
 
       <section id="add-new-user">
         <Row id="add-user-row">
-          <Col id="add-new-user-img-col">
+          <Col>
             <img id="add-circle-img" className="add-circle-img" src={AddCircle} alt="Adicionar novo usuário"></img>
           </Col>
 
