@@ -17,21 +17,21 @@ class WithPlace extends React.Component {
                     <Form>
                         <Form.Group as={Row} className="row">
                             <Form.Label column sm="1">
-                                Data
+                                Data:
                                 </Form.Label>
                             <Col sm="2">
                                 <Form.Control type="date" />
                             </Col>
 
                             <Form.Label column sm="1">
-                                Horario
+                                Horario:
                                 </Form.Label>
                             <Col sm="2">
                                 <Form.Control type="time" />
                             </Col>
 
                             <Form.Label column sm="1">
-                                Sala
+                                Sala:
                                 </Form.Label>
                             <Col sm="2">
                                 <Form.Control type="text" />
