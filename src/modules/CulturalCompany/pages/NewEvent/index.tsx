@@ -88,7 +88,7 @@ class NewEvent extends React.Component {
 
           <div className="session">
             <h5>Sessões e ingressos</h5>
-            <Form>
+            <Form className="form">
               <Form.Group as={Row} className="row">
                 <Form.Label column sm="2">
                   Tipo de ingresso:
