@@ -35,23 +35,21 @@ const Users = () => {
       <h1>Perfil</h1>
 
     <Form>
-      <Form.Row>
+      <Form.Row className="profile-row">
         
         <Col sm="1" >
           <Form.Label> Nome: </Form.Label>
         </Col>
         
-        <Col >
+        <Col className="profile-name-col">
           <Form.Label>{profile.name}</Form.Label>
-          {/* <Form.Control plaintext readOnly type="name" placeholder={profile.name} /> */}
         </Col> 
 
         <Col sm="1">
           <Form.Label> CPF: </Form.Label>
         </Col>
-        <Col>
+        <Col className="profile-name-col">
           <Form.Label>{profile.cpf}</Form.Label>
-          {/* <Form.Control plaintext readOnly type="cpf" placeholder={profile.cpf} />  */}
         </Col>
 
       </Form.Row>
@@ -59,23 +57,17 @@ const Users = () => {
       <Form.Row>
 
         <Col sm="1">
-        <Form.Label>
-          Email:
-        </Form.Label>
+          <Form.Label> Email: </Form.Label>
         </Col>
-        <Col>
+        <Col className="profile-name-col">
           <Form.Label>{profile.email}</Form.Label>
-          {/* <Form.Control plaintext readOnly type="email" placeholder={profile.email} /> */}
         </Col>
 
         <Col sm="1">
-        <Form.Label>
-          Celular:
-        </Form.Label>
+          <Form.Label> Celular: </Form.Label> 
         </Col>
-        <Col>
+        <Col className="profile-name-col">
           <Form.Label>{profile.email}</Form.Label>
-          {/* <Form.Control plaintext readOnly type="phone" placeholder={profile.phone} /> */}
         </Col>
 
       </Form.Row>
@@ -84,37 +76,39 @@ const Users = () => {
 
     <h1>Lista de usuários</h1>
 
-    <section id="search-adm-users">
-      <Form>
-        <Form.Row>
-          <Col sm="1">
-            <Form.Label>Name:</Form.Label>
-          </Col>
-          <Col>
-            <Form.Control />
-          </Col>
-          <Col sm="1">
-            <Form.Label>CPF:</Form.Label>
-          </Col>
-          <Col>
-            <Form.Control />
-          </Col>
-          <Button>Buscar</Button>
-        </Form.Row>
-      </Form>
-    </section>
+    <div id="user-list-div" className="user-list-div">
+      <section id="search-adm-users">
+        <Form>
+          <Form.Row>
+            <Col sm="1">
+              <Form.Label>Name:</Form.Label>
+            </Col>
+            <Col>
+              <Form.Control />
+            </Col>
+            <Col sm="1">
+              <Form.Label>CPF:</Form.Label>
+            </Col>
+            <Col>
+              <Form.Control />
+            </Col>
+            <Button id="search-button" className="search-button">Buscar</Button>
+          </Form.Row>
+        </Form>
+      </section>
 
-    <section id="add-new-user">
-      <Row id="add-user-row">
-        <Col id="add-new-user-img-col">
-          <img id="add-circle-img" className="add-circle-img" src={AddCircle} alt="Adicionar novo usuário"></img>
-        </Col>
+      <section id="add-new-user">
+        <Row id="add-user-row">
+          <Col id="add-new-user-img-col">
+            <img id="add-circle-img" className="add-circle-img" src={AddCircle} alt="Adicionar novo usuário"></img>
+          </Col>
 
-        <Col id="add-new-user-text-col">
-          <p>Novo usuário</p>
-        </Col> 
-      </Row>
-    </section>
+          <Col id="add-new-user-text-col">
+            <p>Novo usuário</p>
+          </Col> 
+        </Row>
+      </section>
+    </div>
 
     <section id="adm-user-list">
       <Table responsive="sm">

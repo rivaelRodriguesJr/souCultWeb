@@ -17,20 +17,43 @@ h1{
 #add-user-row{
     text-align: right;
     padding-top: 20px;
-    padding-bottom: 20px;
+    //padding-bottom: 20px;
 }
 
 #add-circle-img{
-    padding-left: 750px;
+    padding-left: 700px;
     padding-right: 0%;
 }
 
 #add-new-user-text-col{
-    padding-right: 49px;
+    padding-right: 59px;
+    
 }
 
 #pagination{
     margin-left: 30%;
     margin-right: auto;
     padding-top: 15px;
+}
+
+#search-button{
+    width: 130px;
+}
+
+#user-list-div{
+    background-color: #EEEAEB;
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-name-col{
+    background-color: #EEEAEB;
+
+}
+
+.profile-row {
+    padding-bottom: 15px;
 }
