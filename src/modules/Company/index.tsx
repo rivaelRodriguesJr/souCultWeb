@@ -1,32 +1,43 @@
-import BaseContainer from "core/components/BaseContainer";
+import { createStyles, CssBaseline, makeStyles, Theme } from "@material-ui/core";
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import Sidebar from "core/components/Sibebar";
-import { Route, Switch } from "react-router";
+import CompanyRoutes from "./CompanyRoutes";
 import './styles.scss';
+
 
 const routes: any[] = [
   {
     name: 'Colaboradores',
-    path: '/company/users'
+    path: '/company/users',
+    Icon: PersonOutlineOutlinedIcon
   },
 ];
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(5),
+    }
+  }),
+);
+
 const Company = () => {
 
+  const classes = useStyles();
+
   return (
-    <div className="company-container">
+    <div className={classes.root}>
+      <CssBaseline />
       <Sidebar routes={routes} />
-      <div className="company-content">
-        <Switch>
-          <Route path="/company/users">
-            <BaseContainer title="Colaboradores">
-              <h2>Colaboradores</h2>
-            </BaseContainer>
-          </Route>
-        </Switch>
-      </div>
+      <main className={classes.content}>
+        <CompanyRoutes />
+      </main>
     </div>
   );
-
-}
+};
 
 export default Company;

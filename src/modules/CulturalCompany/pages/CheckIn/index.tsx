@@ -3,8 +3,8 @@ import './styles.scss';
 
 const CheckIn = () => {
   return (
-    <BaseContainer title="Meus eventos">
-      <h2>Meus eventos</h2>
+    <BaseContainer title="Check-in">
+      <h2>Check-in</h2>
     </BaseContainer>
   );
 
