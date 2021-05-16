@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import BaseContainer from "core/components/BaseContainer";
 import Filter from "./components/Filter";
 import Table from "./components/Table";
 import { Pagination } from '@material-ui/lab';
 import './styles.scss';
+import { makePrivateRequest } from 'core/utils/request';
+
+
 
 class Events extends React.Component {
   constructor(props: any) {
@@ -12,6 +15,12 @@ class Events extends React.Component {
 
     }
   };
+
+  async componentDidMount() {
+    makePrivateRequest({method:'GET',url:'users'}).then(response=>{
+      console.log(response);
+    })
+  }
 
   render() {
     return (

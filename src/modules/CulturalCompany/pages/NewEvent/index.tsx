@@ -3,9 +3,8 @@ import BaseContainer from "core/components/BaseContainer";
 import './styles.scss';
 import WithoutPlace from './components/withoutPlace';
 import WithPlace from './components/withPlace';
-import Table from './components/Table';
 
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
 
 class NewEvent extends React.Component {
   constructor(props: any) {
@@ -90,29 +89,15 @@ class NewEvent extends React.Component {
             <h5>Sessões e ingressos</h5>
             <Form className="form">
               <Form.Group as={Row} className="row">
-                <Form.Label column sm="2">
-                  Tipo de ingresso:
-                </Form.Label>
-
-                <Col sm="1">
-                  <Form.Check type="radio" aria-label="radio 1" />
-                </Col>
-                <Form.Label column sm="2">
-                  Sem lugar marcado
-                </Form.Label>
-
-                <Col sm="1">
-                  <Form.Check type="radio" aria-label="radio 2" />
-                </Col>
-                <Form.Label column sm="2">
-                  Com lugar marcado
-                </Form.Label>
-                <WithoutPlace></WithoutPlace>
+                <Tabs defaultActiveKey="semLugar" id="uncontrolled-tab-example">
+                  <Tab eventKey="semLugar" title="Sem lugar marcado">
+                    <WithoutPlace></WithoutPlace>
+                  </Tab>
+                  <Tab eventKey="comLugar" title="Com lugar marcado">
+                    <WithPlace></WithPlace>
+                  </Tab>
+                </Tabs>
               </Form.Group>
-              <Table></Table>
-              <Col sm="2">
-                <Button className="button" variant="sea-blue-1">Criar evento</Button>
-              </Col>
             </Form>
           </div>
         </BaseContainer>

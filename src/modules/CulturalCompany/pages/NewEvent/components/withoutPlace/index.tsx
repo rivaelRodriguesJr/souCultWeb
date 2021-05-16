@@ -1,5 +1,6 @@
 import React from "react";
 import './styles.scss';
+import StandardTable from '../Table';
 
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
@@ -61,6 +62,10 @@ class WithoutPlace extends React.Component {
                         </Form.Group>
                         <Col sm="2">
                             <Button className="button" variant="sea-blue-1">Adicionar sessão</Button>
+                        </Col>
+                        <StandardTable></StandardTable>
+                        <Col sm="2">
+                            <Button className="button" variant="sea-blue-1">Criar evento</Button>
                         </Col>
                     </Form>
                 </div>

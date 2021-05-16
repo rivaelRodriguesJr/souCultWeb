@@ -1,0 +1,17 @@
+.newRoom {
+    text-align: right;
+    margin: 5px;
+    font-weight: bold;
+  }
+  
+  .pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
+
+  a {
+    color: black;
+  }

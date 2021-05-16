@@ -5,6 +5,8 @@ import CheckIn from './pages/CheckIn';
 import Events from './pages/Events';
 import NewEvent from './pages/NewEvent';
 import Users from './pages/Users';
+import Rooms from './pages/Rooms';
+import NewRoom from './pages/NewRoom';
 
 import './styles.scss';
 
@@ -15,6 +17,12 @@ const CulturalCompanyRoutes = () => (
     </Route>
     <Route path="/cultural-company/newevent">
       <NewEvent />
+    </Route>
+    <Route path="/cultural-company/rooms">
+      <Rooms/>
+    </Route>
+    <Route path="/cultural-company/newroom">
+      <NewRoom/>
     </Route>
     <Route path="/cultural-company/check-in">
       <CheckIn />
