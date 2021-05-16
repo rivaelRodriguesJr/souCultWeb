@@ -7,6 +7,7 @@ import NewEvent from './pages/NewEvent';
 import Users from './pages/Users';
 import Rooms from './pages/Rooms';
 import NewRoom from './pages/NewRoom';
+import UsersForm from './pages/UsersForm';
 
 import './styles.scss';
 
@@ -32,12 +33,14 @@ const CulturalCompanyRoutes = () => (
         <h2>Salas</h2>
       </BaseContainer>
     </Route>
-    <Route path="/cultural-company/users">
+    <Route path="/cultural-company/users" exact>
       <BaseContainer title="Administradores">
+        <Users />
       </BaseContainer>
-      <Users/>
     </Route>
-  
+    <Route path="/cultural-company/users/:userId">
+      <UsersForm />
+    </Route>
   </Switch>
 )
 
