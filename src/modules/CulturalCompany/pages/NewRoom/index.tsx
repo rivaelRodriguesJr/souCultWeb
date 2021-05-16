@@ -30,7 +30,7 @@ class NewRoom extends React.Component {
                   Imagem da sala:
                 </Form.Label>
                 <Col sm="2">
-                  <Button className = "downloadButton">importar</Button>
+                  <Button variant = "gray">importar</Button>
                 </Col>
               </Form.Group>
 
@@ -58,7 +58,7 @@ class NewRoom extends React.Component {
                   <Form.Control type="number" />
                 </Col>
                 <Col sm="1">
-                  <Button className="adButton">+</Button>
+                  <Button variant = "gray">+</Button>
                 </Col>
               </Form.Group>
               <div>

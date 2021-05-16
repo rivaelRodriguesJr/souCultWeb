@@ -51,20 +51,21 @@ class WithoutPlace extends React.Component {
                             <Form.Label column sm="1">
                                 Plano:
                             </Form.Label>
-                            <Col sm="2"><Form.Control as="select">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </Form.Control>
+                            <Col sm="2">
+                                <Form.Control as="select">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Form.Control>
                             </Col>
                         </Form.Group>
-                        <Col sm="2">
-                            <Button className="button" variant="sea-blue-1">Adicionar sessão</Button>
+                        <Col sm="3">
+                            <Button className="button" variant="gray">Adicionar sessão</Button>
                         </Col>
                         <StandardTable></StandardTable>
-                        <Col sm="2">
+                        <Col sm="3">
                             <Button className="button" variant="sea-blue-1">Criar evento</Button>
                         </Col>
                     </Form>

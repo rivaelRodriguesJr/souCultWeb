@@ -13,56 +13,39 @@ class WithPlace extends React.Component {
 
     render() {
         return (
-            <>
-                <div className="container">
-                    <Form>
-                        <Form.Group as={Row} className="row">
-                            <Form.Label column sm="1">
-                                Data:
-                                </Form.Label>
-                            <Col sm="2">
-                                <Form.Control type="date" />
-                            </Col>
+              <>
+              <div className="container">
+                  <Form>
+                      <Form.Group as={Row} className="row">
+                          <Form.Label column sm="1">
+                              Data:
+                          </Form.Label>
+                          <Col sm="2">
+                              <Form.Control type="date" />
+                          </Col>
 
-                            <Form.Label column sm="1">
-                                Horario:
-                                </Form.Label>
-                            <Col sm="2">
-                                <Form.Control type="time" />
-                            </Col>
+                          <Form.Label column sm="1">
+                              Horario:
+                          </Form.Label>
+                          <Col sm="2">
+                              <Form.Control type="time" />
+                          </Col>
 
-                            <Form.Label column sm="1">
-                                Sala:
-                            </Form.Label>
-                            <Col sm="2">
-                                <Form.Control as="select">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </Form.Control>
-                            </Col>
+                          <Form.Label column sm="1">
+                              Sala:
+                          </Form.Label>
+                          <Col sm="2">
+                              <Form.Control type="text" />
+                          </Col>
 
-                            <Form.Label column sm="1">
-                                Plano:
-                            </Form.Label>
-                            <Col sm="2">
-                                <Form.Control as="select">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Label column sm="3">
-                            Selecione os assentos disponíveis:
-                        </Form.Label>
-
-                        <Table responsive className="table" >
+                          <Form.Label column sm="1">
+                              Plano:
+                          </Form.Label>
+                          <Col sm="2">
+                              <Form.Control type="text" />
+                          </Col>
+                      </Form.Group>
+                      <Table responsive className="table" >
                             <thead className="tableHeader">
                                 <tr>
                                     <th>Área</th>
@@ -76,7 +59,7 @@ class WithPlace extends React.Component {
                             <tbody>
                                 {Array.from({ length: 3 }).map((_, index) => (
                                     <tr>
-                                        {Array.from({ length: 3 }).map((_, index) => (
+                                        {Array.from({ length: 3  }).map((_, index) => (
                                             <td key={index}>Table cell {index}</td>
                                         ))}
                                         <td>
@@ -86,22 +69,25 @@ class WithPlace extends React.Component {
                                 ))}
                             </tbody>
                         </Table>
-                        <Col sm="2">
-                            <Button className="button" variant="sea-blue-1">Adicionar sessão</Button>
+                        
+                        <Col sm="3">
+                            <Button className="button" variant = "gray">Adicionar sessão</Button>
                         </Col>
+
                         <StandardTable></StandardTable>
-                        <Col sm="2">
+
+                        <Col sm="3">
                             <Button className="button" variant="sea-blue-1">Criar evento</Button>
                         </Col>
-                    </Form>
-                </div>
-            </>
-
+                  </Form>
+              </div>
+          </>
         );
     }
 }
 
 export default WithPlace;
+
 
 
 
