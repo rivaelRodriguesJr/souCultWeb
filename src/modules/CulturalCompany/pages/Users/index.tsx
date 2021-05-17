@@ -124,7 +124,7 @@ const Users = () => {
           {users.map((user, index)=>(
             <tr key={index}>
               <td>{user.name}</td>
-              <td>{index}</td>
+              <td>12/05/2021</td>
               <td>{user.email}</td>
             </tr>
           ))}
