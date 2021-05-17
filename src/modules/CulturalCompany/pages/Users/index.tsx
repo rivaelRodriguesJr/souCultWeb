@@ -81,6 +81,7 @@ const Users = () => {
       <section id="search-adm-users">
         <Form>
           <Form.Row>
+            
             <Col sm="1">
               <Form.Label>Name:</Form.Label>
             </Col>
@@ -93,19 +94,18 @@ const Users = () => {
             <Col>
               <Form.Control />
             </Col>
+          
             <Button id="search-button" className="search-button">Buscar</Button>
+           
           </Form.Row>
         </Form>
       </section>
 
       <section id="add-new-user">
         <Row id="add-user-row">
-          <Col>
-            <img id="add-circle-img" className="add-circle-img" src={AddCircle} alt="Adicionar novo usuário"></img>
-          </Col>
 
           <Col id="add-new-user-text-col">
-            <p>Novo usuário</p>
+            <p>+ Novo usuário</p>
           </Col> 
         </Row>
       </section>
