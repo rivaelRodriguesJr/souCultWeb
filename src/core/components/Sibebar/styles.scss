@@ -41,7 +41,11 @@
   &.active span {
     font-weight: bold;
     color: #0D9CA4;
-    // border-bottom: 2rem solid #0D9CA4;
+   }
+
+   & a :hover {
+    text-decoration: none;
+    color: #0D9CA4;
    }
 
   // &:hover {
