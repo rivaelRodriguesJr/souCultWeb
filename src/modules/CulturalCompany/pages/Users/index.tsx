@@ -85,7 +85,7 @@ const Users = () => {
               <Form.Label>Name:</Form.Label>
             </Col>
             <Col>
-              <Form.Control />
+              <Form.Control type="text"/>
             </Col>
             <Col sm="1">
               <Form.Label>CPF:</Form.Label>
