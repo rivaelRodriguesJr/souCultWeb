@@ -14,9 +14,9 @@ class Filter extends React.Component {
   render() {
     return (
       <>
-        <div className="container">
+        <div className="filter-container">
           <Form className="filter">
-            <Form.Group as={Row} className="row">
+            <Form.Group as={Row} className="row filter-row">
               <Form.Label column sm="2">
                 Novo evento:
               </Form.Label>
@@ -45,7 +45,7 @@ class Filter extends React.Component {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="row">
+            <Form.Group as={Row} className="row filter-row">
               <Form.Label column sm="2">
                 Status:
               </Form.Label>
