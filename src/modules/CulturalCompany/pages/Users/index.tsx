@@ -5,7 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-// import Pagination from 'react-bootstrap/Pagination';
 import { Pagination } from '@material-ui/lab';
 import { makePrivateRequest } from "core/utils/request";
 import { useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import { User } from 'core/models/User';
 const Users = () => {
 
   const [profile, setProfile] = useState<User>({} as User)
+  const [users, setUsers] = useState<User[]>([])
   
   useEffect(() => {
     makePrivateRequest({ method: 'GET', url: '/profile' }).then(({ data }) => {
@@ -25,7 +25,7 @@ const Users = () => {
     const params = { 'user-type-id': [1, 2] };
 
     makePrivateRequest({ method: 'GET', url: '/users', params }).then(response => {
-      console.log(response.data);
+      setUsers(response.data);
     })
   }, []);
 
@@ -121,21 +121,22 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <tr>
-              {Array.from({ length: 3 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-              ))}
+          {users.map((user, index)=>(
+            <tr key={index}>
+              <td>{user.name}</td>
+              <td>{index}</td>
+              <td>{user.email}</td>
             </tr>
-            ))}
+          ))}
+         
         </tbody>
       </Table>
 
     </section>
 
 
-    <section id="page">
-      <Pagination count={10} />
+    <section className="pager">
+      <Pagination count={3} />
     </section>
 
     </section>
