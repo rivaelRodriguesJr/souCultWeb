@@ -1,0 +1,33 @@
+#checkin-div{
+    background-color: #EEEAEB;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 35px;
+    border-radius: 20px;
+}
+
+.pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
+
+  #checkin-table-header {
+    background: #FCBB15;
+    color: azure;
+    text-align: center;
+  }
+
+  .defaut-button {
+    width: 130px;
+    background: #0D9CA4;
+    border-color: #0D9CA4;
+
+  }
+
+  #checkin-form-row {
+      padding-top: 15px;
+      padding-bottom: 15px;
+  }

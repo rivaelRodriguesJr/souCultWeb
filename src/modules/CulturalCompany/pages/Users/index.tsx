@@ -55,7 +55,7 @@ const Users = () => {
 
       </Form.Row>
 
-      <Form.Row>
+      <Form.Row id="profile-form-row2">
 
         <Col sm="1">
           <Form.Label> Email: </Form.Label>
@@ -72,7 +72,7 @@ const Users = () => {
         </Col>
 
       </Form.Row>
-
+      <hr className="base-container-divider" />
     </Form>
 
     <h1 className="h1-adm-page">Lista de usuários</h1>
@@ -112,7 +112,7 @@ const Users = () => {
     </div>
 
     <section id="adm-user-list">
-      <Table responsive="sm">
+      <Table responsive>
         <thead>
           <tr id="list-user-table-header">
             <th>Nome</th>

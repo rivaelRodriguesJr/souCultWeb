@@ -6,7 +6,7 @@ $theme-colors: (
   "sea-blue-2": #0D9CA4,
   "orange-2": #FE8C12,
   "orange-3": #FE7210,
-  "gray": #EEEAEB,
+  "gray": #e0dbdd,
   "white": #FFFFFF,
   "orange-4": #FAAB56
 );
@@ -15,4 +15,5 @@ $body-bg: #FFF;
 $body-color: #000;
 
 @import '~bootstrap/scss/bootstrap.scss';
+//@import '~antd/dist/antd.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
