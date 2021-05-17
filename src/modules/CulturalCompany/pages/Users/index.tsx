@@ -5,7 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import Pagination from 'react-bootstrap/Pagination';
+// import Pagination from 'react-bootstrap/Pagination';
+import { Pagination } from '@material-ui/lab';
 import { makePrivateRequest } from "core/utils/request";
 import { useEffect, useState } from "react";
 import { User } from 'core/models/User';
@@ -119,40 +120,22 @@ const Users = () => {
             <th>E-mail</th>
           </tr>
         </thead>
-        <tbody id="list-user-table-body">
-          <tr>
-            <td>Camila Silva</td>
-            <td>29/03/2021</td>
-            <td>camilla.silva@gmail.com</td>
-          </tr>
-          <tr>
-            <td>Camila Silva</td>
-            <td>29/03/2021</td>
-            <td>camilla.silva@gmail.com</td>
-          </tr>
-          <tr>
-            <td>Camila Silva</td>
-            <td>29/03/2021</td>
-            <td>camilla.silva@gmail.com</td>
-          </tr>
+        <tbody>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <tr>
+              {Array.from({ length: 3 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+              ))}
+            </tr>
+            ))}
         </tbody>
       </Table>
 
     </section>
 
 
-    <section id="pagination">
-      <Pagination>
-        <Pagination.First />
-        <Pagination.Prev />
-        <Pagination.Item active>{1}</Pagination.Item>
-        <Pagination.Item>{2}</Pagination.Item>
-        <Pagination.Item>{3}</Pagination.Item>
-        <Pagination.Ellipsis />
-        <Pagination.Item>{7}</Pagination.Item>
-        <Pagination.Next />
-        <Pagination.Last />
-      </Pagination>
+    <section id="page">
+      <Pagination count={10} />
     </section>
 
     </section>
