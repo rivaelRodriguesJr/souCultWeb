@@ -67,10 +67,19 @@ td {
     justify-content: center;
     align-items: center;
     margin: 20px;
-  }
+}  
 
-  p:hover{
-      color: #0D9CA4;
-  }
+p:hover{
+    color: #0D9CA4;
+}
 
- 
+
+.new-user-btn {
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover{
+    color: black;
+    text-decoration: none;
+    }
+}
