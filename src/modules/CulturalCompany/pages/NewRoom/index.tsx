@@ -34,7 +34,7 @@ class NewRoom extends React.Component {
                 </Col>
               </Form.Group>
 
-              <h6>Assentos</h6>
+              <h6 className="room-title">Assentos</h6>
 
               <Form.Group as={Row} className="row">
                 <Form.Label column sm="1">
