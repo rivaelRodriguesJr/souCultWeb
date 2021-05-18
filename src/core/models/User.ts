@@ -6,4 +6,4 @@ export interface User {
     phone: string;
     password: string;
     "user-type-id": number;
-}
+   }

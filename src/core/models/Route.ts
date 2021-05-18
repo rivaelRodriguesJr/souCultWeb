@@ -6,3 +6,4 @@ export interface Route {
   path: string;
   Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
 }
+

@@ -1,4 +1,3 @@
-// @import "~bootstrap/scss/bootstrap";
 #list-user-table-header {
     background: #FCBB15;
     color: azure;
@@ -10,28 +9,68 @@ td {
     text-align: center;
 }
 
-h1{
-    padding-top: 25px;
+.h1-adm-page{
     padding-bottom: 25px;
+    color: #0D9CA4;
+    font-size: 24px;
+    font-weight: bolder;
+    
+
 }
 
 #add-user-row{
     text-align: right;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    //padding-bottom: 20px;
 }
 
-#add-circle-img{
-    padding-left: 750px;
-    padding-right: 0%;
-}
 
 #add-new-user-text-col{
-    padding-right: 49px;
+    text-align: right;
+    margin: 40px;
+    font-weight: bold;
+    
 }
 
-#pagination{
-    margin-left: 30%;
-    margin-right: auto;
-    padding-top: 15px;
+#search-button{
+    width: 130px;
+    background: #0D9CA4;
+    border-color: #0D9CA4;
 }
+
+#user-list-div{
+    background-color: #EEEAEB;
+    padding-top: 40px;
+    padding-right: 20px;
+    //padding-bottom: 10px;
+    padding-left: 20px;
+    //margin-bottom: 10px;
+    border-radius: 20px;
+}
+
+.profile-name-col{
+    background-color: #EEEAEB;
+
+}
+
+.profile-row {
+    padding-bottom: 15px;
+}
+
+#profile-form-row2{
+    padding-bottom: 15px;
+}
+
+.pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
+
+  p:hover{
+      color: #0D9CA4;
+  }
+
+ 
