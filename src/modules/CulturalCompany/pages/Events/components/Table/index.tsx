@@ -1,7 +1,6 @@
 import React from "react";
+import { Table } from 'react-bootstrap';
 import './styles.scss';
-
-import { Button, Form, Row, Col, Table } from 'react-bootstrap';
 
 class TableStandard extends React.Component {
     constructor(props: any) {

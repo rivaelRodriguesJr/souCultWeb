@@ -1,11 +1,10 @@
-import BaseContainer from "core/components/BaseContainer";
-import './styles.scss';
-import Form  from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
 import { Pagination } from '@material-ui/lab';
+import BaseContainer from "core/components/BaseContainer";
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Table from 'react-bootstrap/Table';
+import './styles.scss';
 
 const CheckIn = () => {
   return (

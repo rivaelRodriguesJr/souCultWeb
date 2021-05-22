@@ -1,10 +1,10 @@
-import React from "react";
 import BaseContainer from "core/components/BaseContainer";
-import './styles.scss';
+import React from "react";
+import { Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import WithoutPlace from './components/withoutPlace';
 import WithPlace from './components/withPlace';
+import './styles.scss';
 
-import { Form, Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
 
 class NewEvent extends React.Component {
   constructor(props: any) {

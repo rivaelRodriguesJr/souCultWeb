@@ -1,7 +1,7 @@
 import React from "react";
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import './styles.scss';
 
-import { Button, Form, Row, Col, Table } from 'react-bootstrap';
 
 class Filter extends React.Component {
   constructor(props: any) {
