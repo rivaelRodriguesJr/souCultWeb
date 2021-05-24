@@ -9,7 +9,9 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
 import './style.scss';
+
 
 const Users = () => {
   const [profile, setProfile] = useState<User>({} as User);
@@ -20,15 +22,25 @@ const Users = () => {
       setProfile(data);
     });
 
+    searchList()
+  }, []);
+
+
+  const searchList = () => {
     const params = { 'user-type-id': [1, 2] };
 
     makePrivateRequest({ method: 'GET', url: '/users', params }).then(response => {
       setUsers(response.data);
-    })
-  }, []);
+    });
+  }
 
   const handleDelete = (userId: number) => {
     console.log(userId);
+    makePrivateRequest({ method: 'DELETE', url: `/users/${userId}` }).then(response => {
+      const msg = `Usuário excluído com sucesso!`;
+      toast.info(msg);
+      searchList();
+    })
   }
 
   return (
@@ -110,9 +122,9 @@ const Users = () => {
           <tbody>
             {users.map((user, index) => (
               <tr key={index}>
-                <td>{user.name}</td>
-                <td>12/05/2021</td>
-                <td>{user.email}</td>
+                <td className="pt-4">{user.name}</td>
+                <td className="pt-4">12/05/2021</td>
+                <td className="pt-4">{user.email}</td>
                 <td>
                   <Link
                     to={`/cultural-company/users/${user.id}`}
