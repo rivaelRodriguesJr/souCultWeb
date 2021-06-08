@@ -1,17 +1,21 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UserType } from 'core/models/enums/UserType';
+import { LoginResponse } from 'core/models/LoginResponse';
+import { saveSessionData } from 'core/utils/auth';
+import { makeLogin } from 'core/utils/request';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
-
+import { useHistory } from 'react-router-dom';
+import { toast } from "react-toastify";
 import './styles.scss';
 
-type Props = {
+interface Props {
   show: boolean;
   onHide: () => void;
 }
 
-type FormState = {
+interface FormState {
   username: string;
   password: string;
 }
@@ -21,8 +25,29 @@ const LoginModal = ({ show, onHide }: Props) => {
   const history = useHistory();
 
   const onSubmit = (data: FormState) => {
-    // console.log(data);
-    history.push('/cultural-company');
+
+    makeLogin<LoginResponse>(data)
+      .then(response => {
+
+        saveSessionData(response.data);
+        const { company_type_id } = response.data.user;
+
+        if (company_type_id === UserType.EVENT_ADMIN) {
+          history.push('/cultural-company');
+        } else if (company_type_id === UserType.COMPANY_ADMIN) {
+          history.push('/company');
+        }
+
+      }).catch(error => {
+        let msg;
+        if(error.response.data.error === 'Incorrect username/password combination.') {
+          msg = 'Usuário ou senha inválidos.';
+        } else {
+          msg = 'Erro ao realzar login.';
+        }
+        
+        toast.error(msg);
+      });
   }
 
   return (
