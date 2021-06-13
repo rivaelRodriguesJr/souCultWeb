@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
 import BaseContainer from "core/components/BaseContainer";
-import { Controller, useForm } from "react-hook-form";
-import './styles.scss';
 import { User } from "core/models/User";
 import { makePrivateRequest } from "core/utils/request";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
+import { useHistory, useParams } from "react-router";
+import { toast } from "react-toastify";
+import './styles.scss';
 
 interface FormState {
   name: string;
@@ -15,16 +17,51 @@ interface FormState {
   phone: string;
 }
 
+interface ParamsType {
+  userId: string;
+}
+
 const UsersForm = () => {
-  const { register, handleSubmit, formState: { errors }, watch, control } = useForm<FormState>();
+  const { register, handleSubmit, formState: { errors }, watch, control, setValue } = useForm<FormState>();
   const [showPassword, setShowPassword] = useState(false);
+  const history = useHistory();
+  
+  const { userId } = useParams<ParamsType>();
+  const isEditing = userId !== 'create';
+  const formButton = isEditing ? 'Editar usuário' : 'Adicionar usuário';
 
   const password = useRef({});
   password.current = watch("password", "");
 
+  useEffect(() => {
+    if (isEditing) {
+      makePrivateRequest<User>({ url: `/users/${userId}` })
+        .then(({ data }) => {
+          setValue('name', data.name);
+          setValue('cpf', data.cpf);
+          setValue('email', data.email);
+          setValue('password', data.password);
+          setValue('passwordConfirm', data.password);
+          setValue('phone', data.phone);
+        });
+    }
+  }, [userId, isEditing, setValue]);
+
   const onSubmit = (data: FormState) => {
     const user: User = { ...data, "user-type-id": 1 };
-    makePrivateRequest({ method: 'DELETE', url: '/users/5', data: user }).then(console.log);
+    makePrivateRequest({
+      method: isEditing ? 'PUT' : 'POST',
+      url: isEditing ? `/users/${userId}` : '/users',
+      data: user
+    }).then(() => {
+      const msg = `Usuário ${isEditing ? 'alterado' : 'salvo'} com sucesso!`;
+      toast.info(msg);
+      history.goBack();
+    })
+      .catch(() => {
+        const msg = `Erro ao ${isEditing ? 'alterar': 'salvar'} usuário!`;
+        toast.error(msg);
+      });
   }
 
   return (
@@ -60,6 +97,7 @@ const UsersForm = () => {
                 />
               }
               rules={{ required: 'Campo obrigatório', pattern:{
+                // eslint-disable-next-line no-useless-escape
                 value: /^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/,
                 message: 'CPF inválido'
               } }}
@@ -85,7 +123,25 @@ const UsersForm = () => {
 
           <div className="col-sm-12 col-md-6 form-group">
             <label className="user-form-label">Celular<i className="text-danger">*</i></label>
-            <input
+            <Controller
+              control={control}
+              name="phone"
+              render={({ field }) => 
+                <InputMask
+                  className={`form-control ${errors.phone && 'is-invalid'}`}
+                  mask="(99) 99999-9999"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              }
+              // rules={{ required: 'Campo obrigatório', pattern:{
+              //   // eslint-disable-next-line no-useless-escape
+              //   value: /^(\(11\) [9][0-9]{4}-[0-9]{4})|(\(1[2-9]\) [5-9][0-9]{3}-[0-9]{4})|(\([2-9][1-9]\) [5-9][0-9]{3}-[0-9]{4})$/,
+              //   message: 'Celular inválido'
+              // } }}
+            />
+            {/* <input
               id="phone"
               type="text"
               className={`form-control ${errors.phone && 'is-invalid'}`}
@@ -93,7 +149,7 @@ const UsersForm = () => {
                 required: "Campo obrigatório"
               })
               }
-            />
+            /> */}
             <div className="invalid-feedback d-block">{errors.phone?.message}</div>
           </div>
 
@@ -120,7 +176,7 @@ const UsersForm = () => {
               {...register('passwordConfirm',
                 {
                   required: "Campo obrigatório",
-                  validate: value => value === password.current || 'Confirmação de senha inválida'
+                  validate: value => value === password.current || 'As senhas são diferentes'
                 })
               }
             />
@@ -137,13 +193,14 @@ const UsersForm = () => {
 
           <div className="col-12">
             <button
-              type="submit"
+              type="button"
               className="btn btn-gray mr-3"
+              onClick={() => history.goBack()} 
             >Voltar</button>
             <button
               type="submit"
               className="btn btn-sea-blue-2"
-            >Adicionar usuário</button>
+            >{formButton}</button>
           </div>
         </div>
       </form>

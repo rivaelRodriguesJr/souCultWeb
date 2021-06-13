@@ -1,35 +1,47 @@
-import './style.scss';
-import AddCircle from 'core/assets/images/add+circle.png';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
+import { IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
-import { makePrivateRequest } from "core/utils/request";
-import { useEffect, useState } from "react";
+import DeleteButton from 'core/components/DeleteButton';
 import { User } from 'core/models/User';
+import { makePrivateRequest } from "core/utils/request";
+import React, { useEffect, useState } from 'react';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
-
+import { toast } from "react-toastify";
+import './style.scss';
 
 
 const Users = () => {
-
-  const [profile, setProfile] = useState<User>({} as User)
-  const [users, setUsers] = useState<User[]>([])
+  const [profile, setProfile] = useState<User>({} as User);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     makePrivateRequest({ method: 'GET', url: '/profile' }).then(({ data }) => {
       setProfile(data);
     });
 
+    searchList()
+  }, []);
+
+
+  const searchList = () => {
     const params = { 'user-type-id': [1, 2] };
 
     makePrivateRequest({ method: 'GET', url: '/users', params }).then(response => {
       setUsers(response.data);
-    })
-  }, []);
+    });
+  }
 
+  const handleDelete = (userId: number) => {
+    console.log(userId);
+    makePrivateRequest({ method: 'DELETE', url: `/users/${userId}` }).then(response => {
+      const msg = `Usuário excluído com sucesso!`;
+      toast.info(msg);
+      searchList();
+    })
+  }
 
   return (
 
@@ -39,37 +51,24 @@ const Users = () => {
       <Form>
         <Form.Row className="profile-row">
 
-          <Col sm="1" >
-            <Form.Label> Nome: </Form.Label>
-          </Col>
-
-          <Col className="profile-name-col">
+          <Col sm="6" >
+            <Form.Label className="fw-bold mr-2">Nome:</Form.Label>
             <Form.Label>{profile.name}</Form.Label>
           </Col>
 
-          <Col sm="1">
-            <Form.Label> CPF: </Form.Label>
-          </Col>
-          <Col className="profile-name-col">
+          <Col sm="6">
+            <Form.Label className="fw-bold mr-2">CPF:</Form.Label>
             <Form.Label>{profile.cpf}</Form.Label>
           </Col>
 
-        </Form.Row>
-
-        <Form.Row id="profile-form-row2">
-
-          <Col sm="1">
-            <Form.Label> Email: </Form.Label>
-          </Col>
-          <Col className="profile-name-col">
-            <Form.Label>{profile.email}</Form.Label>
+          <Col sm="6">
+            <Form.Label className="fw-bold mr-2">Email:</Form.Label>
+            <Form.Label >{profile.email}</Form.Label>
           </Col>
 
-          <Col sm="1">
-            <Form.Label> Celular: </Form.Label>
-          </Col>
-          <Col className="profile-name-col">
-            <Form.Label>{profile.email}</Form.Label>
+          <Col sm="6">
+            <Form.Label className="fw-bold mr-2">Celular:</Form.Label>
+            <Form.Label >{profile.email}</Form.Label>
           </Col>
 
         </Form.Row>
@@ -117,16 +116,27 @@ const Users = () => {
               <th>Nome</th>
               <th>Data de criação</th>
               <th>E-mail</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
               <tr key={index}>
-                <td>{user.name}</td>
-                <td>12/05/2021</td>
-                <td>{user.email}</td>
-              </tr>
-            ))}
+                <td className="pt-4">{user.name}</td>
+                <td className="pt-4">12/05/2021</td>
+                <td className="pt-4">{user.email}</td>
+                <td>
+                  <Link
+                    to={`/cultural-company/users/${user.id}`}
+                  >
+                    <IconButton>
+                      <EditIcon color="primary"/>
+                    </IconButton>
+                  </Link>
+                  <DeleteButton handleDelete={() => user?.id && handleDelete(user.id)} />
+                </td>
+              </tr>)
+            )}
 
           </tbody>
         </Table>
@@ -137,9 +147,7 @@ const Users = () => {
       <section className="pager">
         <Pagination count={3} />
       </section>
-
     </section>
-
   );
 }
 export default Users;

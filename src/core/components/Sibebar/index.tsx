@@ -7,6 +7,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import mainLogo from 'core/assets/images/logo.png';
 import { Route } from 'core/models/Route';
+import { logout } from 'core/utils/auth';
 import { Link, NavLink } from "react-router-dom";
 import './styles.scss';
 
@@ -76,7 +77,7 @@ const Sidebar = ({ routes }: Props) => {
         </List>
       </div>
       <div className="sidebar-logout-container">
-        <Link to="/" className="sidebar-logout-text">
+        <Link to="/" className="sidebar-logout-text" onClick={logout}>
           Sair
         </Link>
       </div>

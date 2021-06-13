@@ -74,7 +74,7 @@ class WithPlace extends React.Component {
                             <Button className="button" variant = "gray">Adicionar sessão</Button>
                         </Col>
 
-                        <StandardTable></StandardTable>
+                        <StandardTable sessions={[]} plans={[]} handleDelete={console.log} handleEdit={console.log} />
 
                         <Col sm="3">
                             <Button className="button" variant="sea-blue-1">Criar evento</Button>

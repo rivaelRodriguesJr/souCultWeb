@@ -1,4 +1,4 @@
-import { createStyles, Divider, makeStyles, Typography } from '@material-ui/core';
+import { createStyles, makeStyles, Typography } from '@material-ui/core';
 import './styles.scss';
 
 type Props = {
@@ -40,7 +40,8 @@ const useStyles = makeStyles(() =>
       marginBottom: '30px'
     },
     baseContainerDivider: {
-      marginBottom: '20px'
+      marginBottom: '20px',
+      color: '#0D9CA4'
     }
   })
 );
@@ -51,7 +52,7 @@ const BaseContainer = ({ title, children }: Props) => {
   return (
     <>
       <Typography className={classes.baseContainerTitle}>{title}</Typography>
-      <Divider className={classes.baseContainerDivider} />
+      <hr className="base-container-divider"/>
       {children}
     </>
   );

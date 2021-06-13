@@ -1,44 +1,44 @@
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Event } from "core/models/Event";
 import React from "react";
+import { Table } from 'react-bootstrap';
 import './styles.scss';
 
-import { Button, Form, Row, Col, Table } from 'react-bootstrap';
+interface Props {
+  events: Event[];
+  isLoading: boolean;
+}
 
-class TableStandard extends React.Component {
-    constructor(props: any) {
-        super(props);
-        this.state = {
+const TableStandard = ({ events, isLoading }: Props) => {
 
-        }
-    };
-
-    render() {
-        return (
-            <>
-                <div>
-                    <Table responsive className="table" >
-                        <thead className="tableHeader">
-                            <tr>
-                                <th>Nome do evento</th>
-                                <th>Ingressos disponíveis</th>
-                                <th>Status</th>
-                                <th>Local</th>
-                                <th>Avaliação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                                <tr>
-                                    {Array.from({ length: 5 }).map((_, index) => (
-                                        <td key={index}>Table cell {index}</td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </>
-        );
-    }
+  return (
+    <div>
+      <Table responsive className="table" >
+        <thead className="tableHeader">
+          <tr>
+            <th>Nome do evento</th>
+            <th>Ingressos disponíveis</th>
+            <th>Status</th>
+            <th>Local</th>
+          </tr>
+        </thead>
+        <tbody className="tableBody">
+          {isLoading && 
+          <tr>
+            <td className="text-center" colSpan={4}><CircularProgress  color="primary"/></td>
+          </tr>}
+          {events.map((event, index) => (
+            <tr key={index}>
+              <td>{event?.name}</td>
+              <td>{event?.tickets_qtd}</td>
+              <td>{event?.status}</td>
+              <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
+  );
 }
 
 export default TableStandard;

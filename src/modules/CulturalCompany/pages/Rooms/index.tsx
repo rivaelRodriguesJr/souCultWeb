@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import BaseContainer from "core/components/BaseContainer";
 import { Pagination } from '@material-ui/lab';
-import './styles.scss';
-import { makePrivateRequest } from 'core/utils/request';
+import BaseContainer from "core/components/BaseContainer";
+import React from 'react';
 import { Table } from 'react-bootstrap';
+import './styles.scss';
 
 class Rooms extends React.Component {
   constructor(props: any) {
