@@ -1,5 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import Index from './pages/Home';
+import Register from './pages/Register/index';
 
 
 const HomeRoutes = () => (
@@ -15,6 +16,9 @@ const HomeRoutes = () => (
     </Route>
     <Route path="/home/contact">
       <h1>Contato</h1>
+    </Route>
+    <Route path="/home/register">
+      <Register></Register>
     </Route>
   </Switch>
 );
