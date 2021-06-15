@@ -1,20 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-
 import mainLogo from 'core/assets/images/logo.png';
-
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import LoginModal from '../LoginModal';
-
 import './styles.scss';
+
+
+
 
 const Navbar = () => {
 
   const [modalShow, setModalShow] = useState(false);
-
-
-  useEffect(() => {
-    console.log('Iniciou!');
-  }, []);
 
   return (
     <nav className="row bg-gray main-nav">

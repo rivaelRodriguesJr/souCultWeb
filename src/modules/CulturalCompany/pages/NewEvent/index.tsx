@@ -1,65 +1,66 @@
+import BackdropLoader from 'core/components/BackdropLoader';
 import BaseContainer from "core/components/BaseContainer";
-import { DetailedEvent, Session } from "core/models/Event";
+import { eventCategories } from 'core/models/enums/EventCategory';
+import { DetailedEvent, DetailedEventRequest, Session } from "core/models/Event";
+import { stateMock } from 'core/models/mocks/StateMock';
 import { makePrivateRequest } from "core/utils/request";
-import React from "react";
-import { Col, Form, Row, Tab, TabContainer, TabContent, Tabs } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Button, Col, Form, Row, Tab, TabContainer, TabContent, Tabs } from 'react-bootstrap';
 import { Controller, useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import WithoutPlace from './components/withoutPlace';
+import WithoutPlace from './components/WithoutPlace';
 import WithPlace from './components/withPlace';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-
-
 import './styles.scss';
 
 interface FormState {
   name: string;
   description: string;
-
   category_id: number;
-
   street_numbering: string;
   zip_code: string;
   city: string;
   state: string;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-  }),
-);
+interface Params {
+  eventId: string;
+}
 
 const NewEvent = () => {
-  const { handleSubmit, formState: { errors }, control, getValues } = useForm<FormState>();
-  const [eventCategories, setEventCategories] = React.useState<{id: number, name: string}[]>([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const { handleSubmit, formState: { errors }, control, getValues, setValue,  } = useForm<FormState>();
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
-  const classes = useStyles();
+  const { eventId } = useParams<Params>();
 
+  const [sessions, setSessions] = useState<Session[]>([]);
 
-  React.useEffect(() => {
-    setEventCategories([
-      {id: 1, name: 'Categoria 1'},
-      {id: 2, name: 'Categoria 2'},
-      {id: 3, name: 'Categoria 3'},
-      {id: 4, name: 'Categoria 4'},
-      {id: 5, name: 'Categoria 5'}
-    ])
-  }, []);
+  const isEditing = eventId !== 'create';
+ 
+  useEffect(() => {
+    if (isEditing) {
+      setIsLoading(true);
+      makePrivateRequest<DetailedEventRequest>({ url: `/event/${eventId}` })
+        .then(response => {
+          const { result } = response.data;
+          setValue('name', result.name);
+          setValue('city', result.address.city);
+          setValue('description', result.description);
+          setValue('state', result.address.state);
+          setValue('street_numbering', result.address.street_numbering);
+          setValue('zip_code', result.address.zip_code);
+          setSessions(result.sessions || []);
+        }).catch(() => {
+          const msg = `Erro ao buscar evento.`;
+          toast.error(msg);
+          history.goBack();
+        }).finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [eventId, isEditing, history, setValue]);
 
-  React.useEffect(() => {
-    console.log(getValues());
-  }, [getValues])
-
-
-  const onSubmit = (session: Session[]) => {
+  const onSubmit = () => {
     const event: DetailedEvent = {
       address: {
         city: getValues('city'),
@@ -69,21 +70,21 @@ const NewEvent = () => {
       },
       description: getValues('description'),
       name: getValues('name'),
-      session,
+      sessions,
       status_id: 1
     };
 
     setIsLoading(true);
     makePrivateRequest({
-      method: 'POST',
-      url: '/event',
+      method: isEditing ? 'PUT' : 'POST',
+      url: isEditing ? `/event/${eventId}` : '/event',
       data: event
     }).then(() => {
-      const msg = `Evento salvo com sucesso.`;
+      const msg = `Evento ${isEditing ? 'alterado' : 'salvo'} com sucesso!`;
       toast.info(msg);
       history.goBack();
     }).catch(() => {
-      const msg = `Erro ao salvar evento.`;
+      const msg = `Erro ao ${isEditing ? 'alterar' : 'salvar'} evento!`;
       toast.error(msg);
     }).finally(() => {
       setIsLoading(false);
@@ -92,13 +93,11 @@ const NewEvent = () => {
 
   return (
     <>
-      <Backdrop className={classes.backdrop} open={isLoading}>
-        <CircularProgress color="primary" />
-      </Backdrop>
-      <BaseContainer title="Novo Evento">
+      <BackdropLoader isLoading={isLoading} />
+      <BaseContainer title={`${isEditing ? 'Editar' : 'Novo'} Evento`}>
         <div className="general">
           <h5>Geral</h5>
-          <Form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <Form className="form">
             <Row>
               <Col sm="6">
                 <Form.Group>
@@ -219,10 +218,15 @@ const NewEvent = () => {
                     render={({ field, fieldState }) =>
                       <>
                         <Form.Control
-                          type="text"
+                          as="select"
                           isInvalid={fieldState.invalid}
                           {...field}
-                        />
+                        >
+                          <option value={-1}>Selecione</option>
+                          {stateMock.map(state => (
+                            <option key={state.abbreviation} value={state.abbreviation}>{state.abbreviation}</option>
+                          ))}
+                        </Form.Control>
                         {errors[field.name] &&
                           <Form.Control.Feedback type="invalid">
                             {errors[field.name]?.message}
@@ -231,7 +235,8 @@ const NewEvent = () => {
                       </>
                     }
                     rules={{
-                      required: 'Campo obrigatório'
+                      required: 'Campo obrigatório',
+                      validate: () => Number(getValues('state')) !== Number(-1) || 'Campo obrigatório'
                     }}
                   />
                 </Form.Group>
@@ -298,70 +303,10 @@ const NewEvent = () => {
                 </Form.Group>
               </Col>
             </Row>
-
-            {/* <Form.Group as={Row} className="row">
-              <Form.Label column sm="2">
-                Novo evento:
-                </Form.Label>
-              <Col sm="4">
-              <Form.Control type="text" />
-              </Col>
-
-              <Form.Label column sm="2">
-                Endereço:
-                </Form.Label>
-              <Col sm="4">
-                <Form.Control type="text" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="row">
-              <Form.Label column sm="2">
-                CEP:
-                </Form.Label>
-              <Col sm="2">
-                <Form.Control type="text" />
-              </Col>
-
-              <Form.Label column sm="2">
-                Cidade:
-                </Form.Label>
-              <Col sm="2">
-                <Form.Control type="text" />
-              </Col>
-
-              <Form.Label column sm="2">
-                Estado:
-                </Form.Label>
-              <Col sm="2">
-                <Form.Control type="text" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="row">
-              <Form.Label column sm="2">
-                Descrição do evento:
-                </Form.Label>
-              <Col sm="6">
-                <Form.Control as="textarea" rows={3} />
-              </Col>
-
-              <Form.Label column sm="2">
-                Categoria:
-                </Form.Label>
-              <Col sm="2">
-                <Form.Control as="select">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </Form.Control>
-              </Col>
-            </Form.Group> */}
           </Form>
-          <hr className="base-container-divider" />
         </div>
+
+        <hr className="base-container-divider" />
 
         <div className="session">
           <h5>Sessões e ingressos</h5>
@@ -369,19 +314,40 @@ const NewEvent = () => {
             <Tab eventKey="semLugar" title="Sem lugar marcado">
               <TabContainer>
                 <TabContent>
-                  <WithoutPlace submit={onSubmit}></WithoutPlace>
+                  <WithoutPlace 
+                    sessions={sessions}
+                    setSessions={setSessions}
+                  />
                 </TabContent>
               </TabContainer>
             </Tab>
             <Tab eventKey="comLugar" title="Com lugar marcado">
-              <WithPlace></WithPlace>
+              <WithPlace />
             </Tab>
           </Tabs>
         </div>
+
+        <Row className="justify-content-end">
+          <Col sm="2">
+            <Button
+              type="button"
+              className="button"
+              variant="secondary"
+              onClick={() => history.goBack()}
+            >Voltar</Button>
+          </Col>
+          <Col sm="2">
+            <Button
+              type="button"
+              className="button"
+              variant="sea-blue-1"
+              onClick={() => handleSubmit(onSubmit)()}
+            >{`${isEditing ? 'Editar' : 'Criar'} evento`}</Button>
+          </Col>
+        </Row>
       </BaseContainer>
     </>
   );
-  // }
 }
 
 export default NewEvent;

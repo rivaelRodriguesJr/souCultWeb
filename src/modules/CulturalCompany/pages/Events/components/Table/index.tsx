@@ -3,7 +3,9 @@ import { Event } from "core/models/Event";
 import React from "react";
 import { Table } from 'react-bootstrap';
 import './styles.scss';
-
+import { Link } from 'react-router-dom';
+import { IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 interface Props {
   events: Event[];
   isLoading: boolean;
@@ -20,6 +22,7 @@ const TableStandard = ({ events, isLoading }: Props) => {
             <th>Ingressos disponíveis</th>
             <th>Status</th>
             <th>Local</th>
+            <th></th>
           </tr>
         </thead>
         <tbody className="tableBody">
@@ -33,6 +36,15 @@ const TableStandard = ({ events, isLoading }: Props) => {
               <td>{event?.tickets_qtd}</td>
               <td>{event?.status}</td>
               <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
+              <td>
+                <Link
+                  to={`/cultural-company/events/${event.id}`}
+                >
+                  <IconButton>
+                    <EditIcon color="primary" />
+                  </IconButton>
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
