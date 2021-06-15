@@ -3,6 +3,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import DeleteButton from 'core/components/DeleteButton';
 import { User } from 'core/models/User';
+import { getSessionData } from 'core/utils/auth';
 import { makePrivateRequest } from "core/utils/request";
 import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
@@ -18,11 +19,21 @@ const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    makePrivateRequest({ method: 'GET', url: '/profile' }).then(({ data }) => {
-      setProfile(data);
-    });
+    // makePrivateRequest({ method: 'GET', url: '/profile' }).then(({ data }) => {
+    //   setProfile(data);
+    // });
+    const { user } = getSessionData();
 
-    searchList()
+    setProfile({
+      "user-type-id": -1,
+      cpf: user.document_id,
+      email: user.username,
+      name: user.name,
+      password: '',
+      phone: user.phone,
+      id: user.id
+    });
+    searchList();
   }, []);
 
 
@@ -35,7 +46,6 @@ const Users = () => {
   }
 
   const handleDelete = (userId: number) => {
-    console.log(userId);
     makePrivateRequest({ method: 'DELETE', url: `/users/${userId}` }).then(response => {
       const msg = `Usuário excluído com sucesso!`;
       toast.info(msg);

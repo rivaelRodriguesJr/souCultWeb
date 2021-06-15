@@ -1,76 +1,76 @@
-import { plans as plansMock } from 'core/models/enums/PlanType';
+import { plans } from 'core/models/enums/PlanType';
 import { Session } from 'core/models/Event';
-import { Plan } from 'core/models/Plan';
 import { SessionWithoutPlaceFormState } from 'core/models/Session';
-import React from 'react';
+import moment from 'moment';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
 import StandardTable from '../Table';
 import './styles.scss';
-import moment from 'moment';
 
 interface Props {
-  submit: (data: Session[]) => void
+  sessions: Session[];
+  setSessions: (sessions: Session[]) => void;
 }
 
-const WithoutPlace = ({ submit }: Props) => {
+const WithoutPlace = ({ sessions, setSessions }: Props) => {
 
   const { handleSubmit, formState: { errors }, control, getValues, reset, setValue } = useForm<SessionWithoutPlaceFormState>();
 
-  const [plans, setPlans] = React.useState<Plan[]>([]);
-  const [sessions, setSessions] = React.useState<SessionWithoutPlaceFormState[]>([]);
-
   const onSubmit = (formState: SessionWithoutPlaceFormState) => {
     if (!formState?.id) {
-      formState.id = new Date().getTime();
-      setSessions([...sessions, formState]);
+      const session: Session = formToSession(formState);
+      session.id = new Date().getTime()
+      setSessions([...sessions, session]);
     } else {
      const index = sessions.findIndex(session => Number(session.id) === Number(formState.id));
-     sessions[index] = formState;
+     sessions[index] = formToSession(formState);
     }
 
     reset();  
   }
 
-  React.useEffect(() => {
-    // makePrivateRequest<Plan[]>({ method: 'GET', url: '/plans' }).then(({ data }) => setPlans(data));
-    setPlans(plansMock);
-  }, [plans]);
+  const formToSession = (formState: SessionWithoutPlaceFormState): Session => {
+    const momentDate: Date = moment(`${formState.date} ${formState.time}`, 'YYYY-MM-DD HH:mm').toDate();
+    return {
+      id: formState.id,
+      id_plan: formState.planId,
+      moment: momentDate,
+      quantity_tickets: formState.ticketsQtd,
+      room: formState.room,
+      ticket_type: formState.planId,
+    }
+  }
 
   const handleSessionDelete = (sessionId: number) => {
-    console.log(sessionId);
+    const s: Session[] = sessions.slice();
+    const index = s.findIndex(session => Number(session.id) === Number(sessionId));
+    s.splice(index, 1);
+    setSessions(s);
   }
 
   const handleSessionEdit = (sessionId: number) => {
+    console.log(sessionId);
     const session = sessions.find(session => Number(session.id) === Number(sessionId));
 
+    let time = '';
+    let date = '';
+
+    if (session?.moment) {
+      time = moment(session.moment).format('HH:mm');
+      date = moment(session.moment).format('YYYY-MM-DD');
+    }
+
     setValue('id', session?.id);
-    setValue('date', session?.date || '');
-    setValue('planId', session?.planId || -1);
+    setValue('date', date);
+    setValue('planId', session?.id_plan || -1);
     setValue('room', session?.room || '');
-    setValue('ticketsQtd', session?.ticketsQtd || -1);
-    setValue('time', session?.time || '');
-  }
-
-  const handleCreateEvent = () => {
-    const s: Session[] = sessions.map(session => {
-      const momentDate: Date = moment(`${session.date} ${session.time}`, 'YYYY-MM-DD HH:mm').toDate();
-      return {
-        id: session.id || 0,
-        id_plan: session.planId,
-        moment: momentDate,
-        quantity_tickets: session.ticketsQtd,
-        room: session.room,
-        ticket_type: session.planId
-      };
-    });
-
-    submit(s);
+    setValue('ticketsQtd', session?.quantity_tickets || -1);
+    setValue('time', time);
   }
 
   return (
     <>
-      <div className="container">
+      <div className="mt-5">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
 
@@ -219,14 +219,6 @@ const WithoutPlace = ({ submit }: Props) => {
             handleDelete={handleSessionDelete}
             handleEdit={handleSessionEdit}
           />
-          <Col sm="3">
-            <Button 
-              type="button" 
-              className="button" 
-              variant="sea-blue-1"
-              onClick={handleCreateEvent}
-            >Criar evento</Button>
-          </Col>
         </Form>
       </div>
     </>

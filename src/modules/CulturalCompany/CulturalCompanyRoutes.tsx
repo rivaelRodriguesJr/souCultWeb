@@ -13,10 +13,10 @@ import './styles.scss';
 
 const CulturalCompanyRoutes = () => (
   <Switch>
-    <Route path="/cultural-company/events">
+    <Route path="/cultural-company/events" exact>
       <Events />
     </Route>
-    <Route path="/cultural-company/newevent">
+    <Route path="/cultural-company/events/:eventId">
       <NewEvent />
     </Route>
     <Route path="/cultural-company/rooms">

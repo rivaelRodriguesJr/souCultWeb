@@ -59,7 +59,7 @@ const Events = () => {
     <BaseContainer title="Meus eventos">
       <Filter></Filter>
       <div className="newOrder">
-        <Link to="/cultural-company/newevent">+ Novo evento</Link>
+        <Link to="/cultural-company/events/create">+ Novo evento</Link>
       </div>
       <Table
         isLoading={isLoadingTable}

@@ -1,4 +1,5 @@
 export interface Event {
+  id: number,
   name: string;
   tickets_qtd: number;
   status: string;
@@ -23,7 +24,7 @@ export interface Address {
 }
 
 export interface Session {
-  id: number;
+  id?: number;
   ticket_type: number;
   moment: Date;
   room: string;
@@ -36,5 +37,9 @@ export interface DetailedEvent {
   description: string;
   status_id: number;
   address: Address;
-  session: Session[];
+  sessions: Session[];
+}
+
+export interface DetailedEventRequest {
+  result: DetailedEvent
 }
