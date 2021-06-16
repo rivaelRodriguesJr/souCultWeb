@@ -2,7 +2,7 @@ import { Pagination } from '@material-ui/lab';
 import BaseContainer from "core/components/BaseContainer";
 import { Event, EventsPaged } from 'core/models/Event';
 import { makePrivateRequest } from 'core/utils/request';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Filter from "./components/Filter";
 import Table from "./components/Table";
@@ -20,16 +20,16 @@ interface EventRequestHeaders {
 }
 
 const Events = () => {
-  const [paginationInfo, setPaginationInfo] = React.useState<PaginationInfo>({
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     count: 0,
     page: 1,
     rowsPerPage: 3
   });
 
-  const [events, setEvents] = React.useState<Event[]>([]);
-  const [isLoadingTable, setIsLoadingTable] = React.useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isLoadingTable, setIsLoadingTable] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const params: EventRequestHeaders = {
       take: paginationInfo.rowsPerPage,
       skip: (paginationInfo.page - 1) * paginationInfo.rowsPerPage
@@ -57,7 +57,7 @@ const Events = () => {
 
   return (
     <BaseContainer title="Meus eventos">
-      <Filter></Filter>
+      <Filter />
       <div className="newOrder">
         <Link to="/cultural-company/events/create">+ Novo evento</Link>
       </div>

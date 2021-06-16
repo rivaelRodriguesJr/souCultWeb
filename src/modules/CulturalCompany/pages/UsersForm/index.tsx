@@ -1,7 +1,8 @@
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import BaseContainer from "core/components/BaseContainer";
-import { User, UserPayload } from "core/models/User";
+import { UserPayload, UserRequest } from "core/models/User";
 import { getSessionData } from "core/utils/auth";
 import { makePrivateRequest } from "core/utils/request";
 import { useEffect, useRef, useState } from "react";
@@ -10,7 +11,6 @@ import InputMask from "react-input-mask";
 import { useHistory, useParams } from "react-router";
 import { toast } from "react-toastify";
 import './styles.scss';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 interface FormState {
   name: string;
@@ -50,14 +50,21 @@ const UsersForm = () => {
 
   useEffect(() => {
     if (isEditing) {
-      makePrivateRequest<User>({ url: `/users/${userId}` })
-        .then(({ data }) => {
-          setValue('name', data.name);
-          setValue('cpf', data.cpf);
-          setValue('email', data.email);
-          setValue('password', data.password);
-          setValue('passwordConfirm', data.password);
-          setValue('phone', data.phone);
+      setIsLoading(true);
+      makePrivateRequest<UserRequest>({ url: `/user/${userId}` })
+        .then(response => {
+          const { result } = response.data;
+          setValue('name', result.name);
+          setValue('cpf', result.document_id);
+          setValue('email', result.username);
+          setValue('password', '');
+          setValue('passwordConfirm', '');
+          setValue('phone', result.phone);
+        }).catch(() => {
+          const msg = `Erro ao buscar usuário!`;
+          toast.error(msg);
+        }).finally(() => {
+          setIsLoading(false);
         });
     }
   }, [userId, isEditing, setValue]);
@@ -84,9 +91,12 @@ const UsersForm = () => {
       const msg = `Usuário ${isEditing ? 'alterado' : 'salvo'} com sucesso!`;
       toast.info(msg);
       history.goBack();
-    }).catch(() => {
+    }).catch(error => {
       const msg = `Erro ao ${isEditing ? 'alterar' : 'salvar'} usuário!`;
-      toast.error(msg);
+      if(error.error) {
+        
+      }
+      toast.error(msg, {});
     }).finally(() => {
       setIsLoading(false);
     });
@@ -170,21 +180,10 @@ const UsersForm = () => {
                     onBlur={field.onBlur}
                   />
                 }
-              // rules={{ required: 'Campo obrigatório', pattern:{
-              //   // eslint-disable-next-line no-useless-escape
-              //   value: /^(\(11\) [9][0-9]{4}-[0-9]{4})|(\(1[2-9]\) [5-9][0-9]{3}-[0-9]{4})|(\([2-9][1-9]\) [5-9][0-9]{3}-[0-9]{4})$/,
-              //   message: 'Celular inválido'
-              // } }}
+                rules={{
+                  required: 'Campo obrigatório'
+                }}
               />
-              {/* <input
-              id="phone"
-              type="text"
-              className={`form-control ${errors.phone && 'is-invalid'}`}
-              {...register('phone', {
-                required: "Campo obrigatório"
-              })
-              }
-            /> */}
               <div className="invalid-feedback d-block">{errors.phone?.message}</div>
             </div>
 
@@ -195,7 +194,7 @@ const UsersForm = () => {
                 type={showPassword ? 'text' : 'password'}
                 className={`form-control ${errors.password && 'is-invalid'}`}
                 {...register('password', {
-                  required: "Campo obrigatório"
+                  validate: value => (value.trim() !== '' || isEditing) || 'Campo obrigatório'
                 })
                 }
               />
@@ -210,7 +209,6 @@ const UsersForm = () => {
                 className={`form-control ${errors.passwordConfirm && 'is-invalid'}`}
                 {...register('passwordConfirm',
                   {
-                    required: "Campo obrigatório",
                     validate: value => value === password.current || 'As senhas são diferentes'
                   })
                 }

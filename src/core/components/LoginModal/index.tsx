@@ -6,7 +6,7 @@ import { saveSessionData } from 'core/utils/auth';
 import { makeLogin } from 'core/utils/request';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { toast } from "react-toastify";
 import './styles.scss';
 
@@ -59,7 +59,7 @@ const LoginModal = ({ show, onHide }: Props) => {
     >
       <Modal.Body>
         <div className="d-flex justify-content-end">
-          <i onClick={onHide}>
+          <i onClick={onHide} className="login-modal-close-button">
             <FontAwesomeIcon icon={faTimes} />
           </i>
         </div>
@@ -98,10 +98,11 @@ const LoginModal = ({ show, onHide }: Props) => {
                 >Entrar</button>
               </div>
               <div className="col-6 register">
-                <button
+                <Link
+                  to="/home/register"
                   type="button"
                   className="btn btn-gray login-form-button"
-                >Requisitar cadastro</button>
+                >Requisitar cadastro</Link>
               </div>
             </div>
 

@@ -1,6 +1,5 @@
-import BaseContainer from "core/components/BaseContainer";
 import React from 'react';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import './styles.scss';
 
 

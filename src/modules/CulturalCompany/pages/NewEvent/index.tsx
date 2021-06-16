@@ -128,7 +128,7 @@ const NewEvent = () => {
 
               <Col sm="6">
                 <Form.Group>
-                  <Form.Label>Edereço<i className="text-danger">*</i></Form.Label>
+                  <Form.Label>Endereço<i className="text-danger">*</i></Form.Label>
                   <Controller
                     name="street_numbering"
                     control={control}

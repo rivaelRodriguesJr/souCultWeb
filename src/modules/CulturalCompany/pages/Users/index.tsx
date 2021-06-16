@@ -1,11 +1,11 @@
-import { IconButton } from '@material-ui/core';
+import { CircularProgress, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import DeleteButton from 'core/components/DeleteButton';
-import { User } from 'core/models/User';
+import { User, UserPagedDetails, UsersPaged } from 'core/models/User';
 import { getSessionData } from 'core/utils/auth';
 import { makePrivateRequest } from "core/utils/request";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
@@ -13,15 +13,35 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import './style.scss';
 
+interface PaginationInfo {
+  count: number;
+  page: number;
+  rowsPerPage: number;
+}
+
+interface EventRequestHeaders {
+  take: number;
+  skip: number;
+}
 
 const Users = () => {
   const [profile, setProfile] = useState<User>({} as User);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserPagedDetails[]>([]);
+  const [isLoadingTable, setIsLoadingTable] = useState(false);
+
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+    count: 0,
+    page: 1,
+    rowsPerPage: 3
+  });
+
 
   useEffect(() => {
-    // makePrivateRequest({ method: 'GET', url: '/profile' }).then(({ data }) => {
-    //   setProfile(data);
-    // });
+    searchList(paginationInfo.page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationInfo.page]);
+
+  useEffect(() => {
     const { user } = getSessionData();
 
     setProfile({
@@ -29,28 +49,44 @@ const Users = () => {
       cpf: user.document_id,
       email: user.username,
       name: user.name,
-      password: '',
+      password: '*******',
       phone: user.phone,
       id: user.id
     });
-    searchList();
+
   }, []);
 
 
-  const searchList = () => {
-    const params = { 'user-type-id': [1, 2] };
+  const searchList = (page: number) => {
+    const params: EventRequestHeaders = {
+      take: paginationInfo.rowsPerPage,
+      skip: (page - 1) * paginationInfo.rowsPerPage
+    }
 
-    makePrivateRequest({ method: 'GET', url: '/users', params }).then(response => {
-      setUsers(response.data);
-    });
+    setUsers([]);
+    setIsLoadingTable(true);
+
+    makePrivateRequest<UsersPaged>({ method: 'GET', url: '/user/all', params })
+      .then(({ data }) => {
+        const count = Math.ceil(data.count / paginationInfo.rowsPerPage);
+        setPaginationInfo({ ...paginationInfo, count });
+
+        setUsers(data.events);
+      })
+      .catch(console.error)
+      .finally(() => setIsLoadingTable(false));
   }
 
   const handleDelete = (userId: number) => {
-    makePrivateRequest({ method: 'DELETE', url: `/users/${userId}` }).then(response => {
+    makePrivateRequest({ method: 'DELETE', url: `/user/${userId}` }).then(() => {
       const msg = `Usuário excluído com sucesso!`;
       toast.info(msg);
-      searchList();
+      searchList(1);
     })
+  }
+
+  const handleChangePage = (_: any, page: number) => {
+    setPaginationInfo({ ...paginationInfo, page });
   }
 
   return (
@@ -115,7 +151,7 @@ const Users = () => {
 
       <section>
         <div className="d-flex justify-content-end mt-5">
-          <Link to="/cultural-company/users/create" className="new-user-btn">+ Novo usuário</Link>
+          <Link to="users/create" className="new-user-btn">+ Novo usuário</Link>
         </div>
       </section>
 
@@ -130,17 +166,21 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
+            {isLoadingTable &&
+              <tr>
+                <td className="text-center" colSpan={4}><CircularProgress color="primary" /></td>
+              </tr>}
             {users.map((user, index) => (
               <tr key={index}>
                 <td className="pt-4">{user.name}</td>
-                <td className="pt-4">12/05/2021</td>
-                <td className="pt-4">{user.email}</td>
+                <td className="pt-4">{user.createDate}</td>
+                <td className="pt-4">{user.username}</td>
                 <td>
                   <Link
                     to={`/cultural-company/users/${user.id}`}
                   >
                     <IconButton>
-                      <EditIcon color="primary"/>
+                      <EditIcon color="primary" />
                     </IconButton>
                   </Link>
                   <DeleteButton handleDelete={() => user?.id && handleDelete(user.id)} />
@@ -154,9 +194,13 @@ const Users = () => {
       </section>
 
 
-      <section className="pager">
-        <Pagination count={3} />
-      </section>
+      <div className="pager">
+        <Pagination
+          count={paginationInfo.count}
+          page={paginationInfo.page}
+          onChange={handleChangePage}
+        />
+      </div>
     </section>
   );
 }

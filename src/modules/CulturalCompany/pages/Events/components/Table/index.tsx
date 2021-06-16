@@ -1,11 +1,10 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Event } from "core/models/Event";
-import React from "react";
-import { Table } from 'react-bootstrap';
-import './styles.scss';
-import { Link } from 'react-router-dom';
-import { IconButton } from '@material-ui/core';
+import { CircularProgress, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import { Event } from "core/models/Event";
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import './styles.scss';
+
 interface Props {
   events: Event[];
   isLoading: boolean;

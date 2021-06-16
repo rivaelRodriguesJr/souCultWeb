@@ -207,10 +207,14 @@ const WithoutPlace = ({ sessions, setSessions }: Props) => {
             </Form.Group>
           </Row>
 
-          <Row>
-            <Form.Group as={Col} sm={12} className="d-flex justify-content-end">
-              <Button type="submit" variant="gray">Adicionar sessão</Button>
-            </Form.Group>
+          <Row className="justify-content-end">
+            <Col sm="2">
+              <Button
+                type="submit"
+                className="button"
+                variant="secondary"
+              >Adicionar sessão</Button>
+            </Col>
           </Row>
 
           <StandardTable

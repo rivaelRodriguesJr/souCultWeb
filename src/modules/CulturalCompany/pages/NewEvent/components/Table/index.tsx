@@ -4,7 +4,6 @@ import DeleteButton from "core/components/DeleteButton";
 import { Session } from "core/models/Event";
 import { Plan } from "core/models/Plan";
 import moment from 'moment';
-import { useEffect } from "react";
 import { Table } from 'react-bootstrap';
 import './styles.scss';
 
