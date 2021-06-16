@@ -114,7 +114,7 @@ const Users = () => {
 
           <Col sm="6">
             <Form.Label className="fw-bold mr-2">Celular:</Form.Label>
-            <Form.Label >{profile.email}</Form.Label>
+            <Form.Label >{profile.phone}</Form.Label>
           </Col>
 
         </Form.Row>
