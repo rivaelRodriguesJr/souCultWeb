@@ -1,14 +1,15 @@
 import BackdropLoader from 'core/components/BackdropLoader';
 import BaseContainer from "core/components/BaseContainer";
-import { eventCategories } from 'core/models/enums/EventCategory';
+import { EventCategory, EventCategoriesRequest } from 'core/models/enums/EventCategory';
 import { DetailedEvent, DetailedEventRequest, Session } from "core/models/Event";
 import { stateMock } from 'core/models/mocks/StateMock';
 import { makePrivateRequest } from "core/utils/request";
 import { useEffect, useState } from 'react';
-import { Button, Col, Form, Row, Tab, TabContainer, TabContent, Tabs } from 'react-bootstrap';
+import { Button, Col, Form, Row, Spinner, Tab, TabContainer, TabContent, Tabs } from 'react-bootstrap';
 import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ImageUpload from './components/ImageUpload';
 import WithoutPlace from './components/WithoutPlace';
 import WithPlace from './components/withPlace';
 import './styles.scss';
@@ -16,7 +17,7 @@ import './styles.scss';
 interface FormState {
   name: string;
   description: string;
-  category_id: number;
+  event_category_id: number;
   street_numbering: string;
   zip_code: string;
   city: string;
@@ -34,6 +35,10 @@ const NewEvent = () => {
   const { eventId } = useParams<Params>();
 
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [uploadedImgUrl, setUploadedImgUrl] = useState('');
+  const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
+  const [isLoadingEventCategories, setIsLoadingEventCategories] = useState(false);
+
 
   const isEditing = eventId !== 'create';
  
@@ -49,6 +54,7 @@ const NewEvent = () => {
           setValue('state', result.address.state);
           setValue('street_numbering', result.address.street_numbering);
           setValue('zip_code', result.address.zip_code);
+          setValue('event_category_id', result.category.id);
           setSessions(result.sessions || []);
         }).catch(() => {
           const msg = `Erro ao buscar evento.`;
@@ -59,6 +65,20 @@ const NewEvent = () => {
         });
     }
   }, [eventId, isEditing, history, setValue]);
+
+  useEffect(() => {
+    setIsLoadingEventCategories(true);
+    makePrivateRequest<EventCategoriesRequest>({ url: '/eventCategories' })
+      .then(({data}) => {
+        setEventCategories(data.result);
+      })
+      .catch(() => {
+        toast.error('Erro ao buscar categorias');
+      })
+      .finally(() => {
+        setIsLoadingEventCategories(false);
+      });
+  }, []);
 
   const onSubmit = () => {
     const event: DetailedEvent = {
@@ -71,7 +91,9 @@ const NewEvent = () => {
       description: getValues('description'),
       name: getValues('name'),
       sessions,
-      status_id: 1
+      status_id: 1,
+      event_category_id: getValues('event_category_id'),
+      banner_link: uploadedImgUrl
     };
 
     setIsLoading(true);
@@ -89,6 +111,10 @@ const NewEvent = () => {
     }).finally(() => {
       setIsLoading(false);
     });
+  }
+
+  const onUploadSuccess = (imgUrl: string) => {
+    setUploadedImgUrl(imgUrl);
   }
 
   return (
@@ -242,7 +268,7 @@ const NewEvent = () => {
                 </Form.Group>
               </Col>
 
-              <Col sm="8">
+              <Col sm="12">
                 <Form.Group>
                   <Form.Label>Descrição do evento<i className="text-danger">*</i></Form.Label>
                   <Controller
@@ -273,8 +299,12 @@ const NewEvent = () => {
               <Col sm="4">
                 <Form.Group>
                   <Form.Label>Categoria<i className="text-danger">*</i></Form.Label>
+                  {isLoadingEventCategories && (
+                    <Spinner className="ml-2" animation="border" size="sm" />
+                  )}
+                  
                   <Controller
-                    name="category_id"
+                    name="event_category_id"
                     control={control}
                     render={({ field, fieldState }) =>
                       <>
@@ -297,9 +327,16 @@ const NewEvent = () => {
                     }
                     rules={{
                       required: 'Campo obrigatório',
-                      validate: () => Number(getValues('category_id')) !== Number(-1) || 'Campo obrigatório'
+                      validate: () => Number(getValues('event_category_id')) !== Number(-1) || 'Campo obrigatório'
                     }}
                   />
+                </Form.Group>
+              </Col>
+
+              <Col sm="6">
+                <Form.Group style={{marginTop: '1.75rem'}}>
+                  {/* <Form.Label>Baner<i className="text-danger">*</i></Form.Label> */}
+                  <ImageUpload onUploadSuccess={onUploadSuccess} />
                 </Form.Group>
               </Col>
             </Row>

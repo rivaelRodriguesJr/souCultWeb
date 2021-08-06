@@ -38,8 +38,41 @@ export interface DetailedEvent {
   status_id: number;
   address: Address;
   sessions: Session[];
+  event_category_id: number;
+  banner_link: string;
 }
 
 export interface DetailedEventRequest {
-  result: DetailedEvent
+  result: {
+    id: number;
+    name: string;
+    description: string;
+    status: {
+      id: number;
+      name: string;
+    };
+    category: {
+      id: number;
+      name: string;
+    };
+    address: {
+      id: number;
+      street_numbering: string;
+      zip_code: string;
+      city: string;
+      state: string;
+      created_at: Date;
+      update_at: Date;
+    };
+    sessions: {
+      id: number;
+      ticket_type: number;
+      moment: Date;
+      room: string;
+      quantity_tickets: number;
+      id_plan: number;
+      created_at: Date;
+      update_at: Date;
+    } [];
+  }
 }

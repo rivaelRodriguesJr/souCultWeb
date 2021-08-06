@@ -63,6 +63,7 @@ const LoginModal = ({ show, onHide }: Props) => {
             <FontAwesomeIcon icon={faTimes} />
           </i>
         </div>
+          <i className="bi bi-x"></i>
         <div className="login-form-container">
           <h2 className="login-form-title" >LOGIN</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
