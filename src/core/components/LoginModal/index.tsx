@@ -4,7 +4,9 @@ import { UserType } from 'core/models/enums/UserType';
 import { LoginResponse } from 'core/models/LoginResponse';
 import { saveSessionData } from 'core/utils/auth';
 import { makeLogin } from 'core/utils/request';
+import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -23,9 +25,10 @@ interface FormState {
 const LoginModal = ({ show, onHide }: Props) => {
   const { register, handleSubmit, formState: { errors }  } = useForm<FormState>();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data: FormState) => {
-
+    setIsLoading(true);
     makeLogin<LoginResponse>(data)
       .then(response => {
 
@@ -47,6 +50,8 @@ const LoginModal = ({ show, onHide }: Props) => {
         }
         
         toast.error(msg);
+      }).finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -95,8 +100,10 @@ const LoginModal = ({ show, onHide }: Props) => {
               <div className="col-6 login">
                 <button
                   type="submit"
-                  className="btn btn-orange-1 text-white login-form-button"
-                >Entrar</button>
+                  className="btn btn-orange-1 text-white login-form-button d-flex align-items-center justify-content-center"
+                >Entrar
+                {isLoading && (<Spinner animation="border" size="sm" className="ml-2" />)}
+                </button>
               </div>
               <div className="col-6 register">
                 <Link
