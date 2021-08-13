@@ -36,6 +36,7 @@ const NewEvent = () => {
 
   const [sessions, setSessions] = useState<Session[]>([]);
   const [uploadedImgUrl, setUploadedImgUrl] = useState('');
+  const [banner, setBanner] = useState('');
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
   const [isLoadingEventCategories, setIsLoadingEventCategories] = useState(false);
 
@@ -56,6 +57,7 @@ const NewEvent = () => {
           setValue('zip_code', result.address.zip_code);
           setValue('event_category_id', result.category.id);
           setSessions(result.sessions || []);
+          setBanner(result.link_banner || '');
         }).catch(() => {
           const msg = `Erro ao buscar evento.`;
           toast.error(msg);
@@ -81,6 +83,7 @@ const NewEvent = () => {
   }, []);
 
   const onSubmit = () => {
+  
     const event: DetailedEvent = {
       address: {
         city: getValues('city'),
@@ -93,7 +96,7 @@ const NewEvent = () => {
       sessions,
       status_id: 1,
       event_category_id: getValues('event_category_id'),
-      banner_link: uploadedImgUrl
+      banner_link: uploadedImgUrl || banner
     };
 
     setIsLoading(true);
@@ -336,7 +339,10 @@ const NewEvent = () => {
               <Col sm="6">
                 <Form.Group style={{marginTop: '1.75rem'}}>
                   {/* <Form.Label>Baner<i className="text-danger">*</i></Form.Label> */}
-                  <ImageUpload onUploadSuccess={onUploadSuccess} />
+                  <ImageUpload 
+                    banner={banner}
+                    onUploadSuccess={onUploadSuccess}
+                  />
                 </Form.Group>
               </Col>
             </Row>

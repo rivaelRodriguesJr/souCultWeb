@@ -11,13 +11,15 @@ interface ImgUploadResponse {
 }
 
 interface Props {
-  onUploadSuccess: (imgUrl: string) => void
+  onUploadSuccess: (imgUrl: string) => void;
+  banner: string;
 }
 
-const ImageUpload = ({onUploadSuccess}: Props) => {
+const ImageUpload = ({ onUploadSuccess, banner }: Props) => {
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadedImgUrl, setUploadedImgUrl] = useState('');
+  const bannerUrl = uploadedImgUrl || banner;
 
   const onUploadProgress = (progressEvent: ProgressEvent) => {
     const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -68,35 +70,24 @@ const ImageUpload = ({onUploadSuccess}: Props) => {
           />
             <label htmlFor="upload" className="btn btn-secondary button">Adicionar Banner
             </label>
-            {uploadProgress > 0 && (<ProgressBar  now={uploadProgress}/>)}
-            
+            {uploadProgress > 0 && (<ProgressBar  now={uploadProgress}/>)}         
 
         </div>
       </div>
       <div className="col-6 upload-placeholder">
-        {/* {uploadProgress > 0 && (
-          <>
-            <UploadPlaceHolder />
-            <div className="upload-progress-container">
-              <div className="upload-progress" style={{width: `${uploadProgress}%`}}>
-              </div>
-            </div>
-          </>
-        )} */}
-        {uploadedImgUrl && uploadProgress === 0 && (
+        {bannerUrl && uploadProgress === 0 && (
           <a 
-            href={uploadedImgUrl} 
+            href={bannerUrl} 
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
-              src={uploadedImgUrl}
+              src={bannerUrl}
               className="uploaded-image"
               rounded
             />
           </a>
-        )}
-        
+        )}        
       </div>
     </div>
   );

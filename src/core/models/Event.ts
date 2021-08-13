@@ -47,6 +47,7 @@ export interface DetailedEventRequest {
     id: number;
     name: string;
     description: string;
+    link_banner?: string;
     status: {
       id: number;
       name: string;
