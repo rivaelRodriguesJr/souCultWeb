@@ -1,4 +1,4 @@
-import { DetailedRoomSeat } from "./Seat";
+import { Seat } from "./Seat";
 
 export interface Room {
   id: number;
@@ -17,5 +17,9 @@ export interface DetailedRoom  {
   image_link?: any;
   created_at: Date;
   update_at: Date;
-  seats: DetailedRoomSeat[];
+  seats: Seat[];
+}
+
+export interface DetailedRoomResponse {
+  entity: DetailedRoom;
 }

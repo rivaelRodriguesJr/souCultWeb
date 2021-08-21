@@ -12,14 +12,15 @@ interface ImgUploadResponse {
 
 interface Props {
   onUploadSuccess: (imgUrl: string) => void;
-  banner: string;
+  image: string;
+  text?: string;
 }
 
-const ImageUpload = ({ onUploadSuccess, banner }: Props) => {
+const ImageUpload = ({ onUploadSuccess, image, text = 'Adicionar imagem' }: Props) => {
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadedImgUrl, setUploadedImgUrl] = useState('');
-  const bannerUrl = uploadedImgUrl || banner;
+  const imageUrl = uploadedImgUrl || image;
 
   const onUploadProgress = (progressEvent: ProgressEvent) => {
     const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -68,21 +69,21 @@ const ImageUpload = ({ onUploadSuccess, banner }: Props) => {
             onChange={handleChange}
             hidden 
           />
-            <label htmlFor="upload" className="btn btn-secondary button">Adicionar Banner
+            <label htmlFor="upload" className="btn btn-secondary button">{text}
             </label>
             {uploadProgress > 0 && (<ProgressBar  now={uploadProgress}/>)}         
 
         </div>
       </div>
       <div className="col-6 upload-placeholder">
-        {bannerUrl && uploadProgress === 0 && (
+        {imageUrl && uploadProgress === 0 && (
           <a 
-            href={bannerUrl} 
+            href={imageUrl} 
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
-              src={bannerUrl}
+              src={imageUrl}
               className="uploaded-image"
               rounded
             />

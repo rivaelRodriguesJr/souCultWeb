@@ -69,7 +69,6 @@ const WithoutPlace = ({ sessions, setSessions }: Props) => {
   }
 
   return (
-    <>
       <div className="mt-5">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
@@ -225,7 +224,6 @@ const WithoutPlace = ({ sessions, setSessions }: Props) => {
           />
         </Form>
       </div>
-    </>
   );
 }
 

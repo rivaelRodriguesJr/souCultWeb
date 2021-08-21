@@ -1,18 +1,20 @@
+import './styles.scss';
+
 import BackdropLoader from 'core/components/BackdropLoader';
-import BaseContainer from "core/components/BaseContainer";
-import { EventCategory, EventCategoriesRequest } from 'core/models/enums/EventCategory';
-import { DetailedEvent, DetailedEventRequest, Session } from "core/models/Event";
+import BaseContainer from 'core/components/BaseContainer';
+import { EventCategoriesRequest, EventCategory } from 'core/models/enums/EventCategory';
+import { DetailedEvent, DetailedEventRequest, Session } from 'core/models/Event';
 import { stateMock } from 'core/models/mocks/StateMock';
-import { makePrivateRequest } from "core/utils/request";
+import { makePrivateRequest } from 'core/utils/request';
 import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row, Spinner, Tab, TabContainer, TabContent, Tabs } from 'react-bootstrap';
-import { Controller, useForm } from "react-hook-form";
-import { useHistory, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Controller, useForm } from 'react-hook-form';
+import { useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import ImageUpload from './components/ImageUpload';
 import WithoutPlace from './components/WithoutPlace';
 import WithPlace from './components/withPlace';
-import './styles.scss';
 
 interface FormState {
   name: string;
@@ -337,13 +339,13 @@ const NewEvent = () => {
               </Col>
 
               <Col sm="6">
-                <Form.Group style={{marginTop: '1.75rem'}}>
-                  {/* <Form.Label>Baner<i className="text-danger">*</i></Form.Label> */}
-                  <ImageUpload 
-                    banner={banner}
+                <div style={{marginTop: '1.75rem'}}>
+                  <ImageUpload
+                    text="Adicionar Banner"
+                    image={banner}
                     onUploadSuccess={onUploadSuccess}
                   />
-                </Form.Group>
+                </div>
               </Col>
             </Row>
           </Form>

@@ -17,7 +17,8 @@ const statusList: {id: number, name: string}[] = [
 ] 
 
 const Filter = () => {
-  const { handleSubmit, formState: { errors }, control, getValues, setValue, } = useForm<FormState>();
+  // const { handleSubmit, formState: { errors }, control, getValues, setValue, } = useForm<FormState>();
+  const { formState: { errors }, control, getValues } = useForm<FormState>();
 
   return (
     <div className="filter-container">
