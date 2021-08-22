@@ -1,9 +1,9 @@
 import { createStyles, CssBaseline, makeStyles, Theme } from "@material-ui/core";
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import Sidebar from "core/components/Sibebar";
+import React from "react";
 import CompanyRoutes from "./CompanyRoutes";
 import './styles.scss';
-
 
 const routes: any[] = [
   {
