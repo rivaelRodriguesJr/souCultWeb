@@ -12,11 +12,11 @@ export interface RoomsPaged {
 }
 
 export interface DetailedRoom  {
-  id: number;
+  id?: number;
   name: string;
   image_link?: any;
-  created_at: Date;
-  update_at: Date;
+  created_at?: Date;
+  update_at?: Date;
   seats: Seat[];
 }
 

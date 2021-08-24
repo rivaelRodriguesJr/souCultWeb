@@ -49,7 +49,6 @@ const WithoutPlace = ({ sessions, setSessions }: Props) => {
   }
 
   const handleSessionEdit = (sessionId: number) => {
-    console.log(sessionId);
     const session = sessions.find(session => Number(session.id) === Number(sessionId));
 
     let time = '';

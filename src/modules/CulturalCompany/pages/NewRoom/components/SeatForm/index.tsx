@@ -4,28 +4,59 @@ import ControlledFormControl from 'core/components/ControlledFormControl';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Seat } from 'core/models/Seat';
-import { useState } from 'react';
+import SeatTable from '../SeatTable';
 
 interface FormState {
+  id?: number;
   area: string;
   row: number;
   quantity: number;
-
 }
 
 interface Props {
-  submitSeat: (seat: Seat) => void;
-  seat?: Seat;
+  seats: Seat[];
+  setSeats: (seats: Seat[]) => void;
 }
 
 
-const SeatForm = ({submitSeat, seat}: Props) => {
-  const { handleSubmit, formState: { errors }, control, getValues, setValue, reset } = useForm<FormState>();
+const SeatForm = ({ seats, setSeats }: Props) => {
+  const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<FormState>();
 
-  const onSubmit = ({ area, row, quantity }: FormState) => {
-    const id = seat?.id || new Date().getTime();
-    submitSeat({ id, area, row, quantity });
+  const onSubmit = (formState: FormState) => {
+    if (!formState?.id) {
+      console.log('add');
+      const seat: Seat = formToSeat(formState);
+      seat.id = new Date().getTime()
+      setSeats([...seats, seat]);
+    } else {
+      console.log('edit');
+     const index = seats.findIndex(seat => Number(seat.id) === Number(formState.id));
+     seats[index] = formToSeat(formState);
+    }
+
     reset();
+  }
+
+  const handleSeatDelete = (seat: number) => {
+    const s: Seat[] = seats.slice();
+    const index = s.findIndex(session => Number(session.id) === Number(seat));
+    s.splice(index, 1);
+    setSeats(s);
+  }
+
+  const handleSeatEdit = (seatId: number) => {
+    const seat = seats.find(seat => Number(seat.id) === Number(seatId));
+    setValue('id', seat?.id);
+    setValue('area', seat?.area || '');
+    setValue('row', seat?.row || 0);
+    setValue('quantity', seat?.quantity || 0);
+  }
+
+  const formToSeat = (formState: FormState) => {
+    const seat: Seat = {
+      ...formState
+    }
+    return seat;
   }
 
   return (
@@ -78,11 +109,17 @@ const SeatForm = ({submitSeat, seat}: Props) => {
             <Button
               type="submit"
               className="button mt-3"
-              variant="secondary"
+              variant="orange-1"
             >Adicionar sala</Button>
           </Col>
         </Row>
       </Form>
+
+      <SeatTable
+        seats={seats}
+        handleDelete={handleSeatDelete}
+        handleEdit={handleSeatEdit}
+      />
     </>
   );
 }

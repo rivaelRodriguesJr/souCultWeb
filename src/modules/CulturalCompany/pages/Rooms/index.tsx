@@ -14,7 +14,6 @@ interface PaginationInfo {
   rowsPerPage: number;
 }
 
-
 interface RoomRequestHeaders {
   take: number;
   skip: number;
@@ -68,7 +67,7 @@ const Rooms = () => {
     .then(() => {
       const msg = `Sala excluída com sucesso!`;
       toast.info(msg);
-      searchList(0);
+      searchList(1);
     })
     .catch(() => {
       toast.error('Erro ao excluir sala.');

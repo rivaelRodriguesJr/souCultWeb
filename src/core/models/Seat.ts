@@ -1,5 +1,5 @@
 export interface Seat {
-  id: number;
+  id?: number;
   area: string;
   row: number;
   quantity: number;

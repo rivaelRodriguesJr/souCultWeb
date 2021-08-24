@@ -6,6 +6,7 @@ import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import Sidebar from 'core/components/Sibebar';
 import { Route } from 'core/models/Route';
+
 import CulturalCompanyRoutes from './CulturalCompanyRoutes';
 
 const routes: Route[] = [
