@@ -6,3 +6,12 @@ export interface SessionWithoutPlaceFormState {
   ticketsQtd: number;
   planId: number;
 }
+
+export interface SessionWithPlaceFormState {
+  id?: number;
+  date: string;
+  time: string;
+  roomId: number;
+  ticketsQtd: number;
+  planId: number;
+}

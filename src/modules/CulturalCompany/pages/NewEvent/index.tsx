@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 
 import ImageUpload from './components/ImageUpload';
 import WithoutPlace from './components/WithoutPlace';
-import WithPlace from './components/withPlace';
+import WithPlace from './components/WithPlace';
 
 interface FormState {
   name: string;
