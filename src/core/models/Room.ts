@@ -1,4 +1,4 @@
-import { Seat } from "./Seat";
+import { Area } from './Area';
 
 export interface Room {
   id: number;
@@ -17,7 +17,8 @@ export interface DetailedRoom  {
   image_link?: any;
   created_at?: Date;
   update_at?: Date;
-  seats: Seat[];
+  areas: Area[];
+  seats: any;
 }
 
 export interface DetailedRoomResponse {

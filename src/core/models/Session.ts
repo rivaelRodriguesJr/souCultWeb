@@ -1,3 +1,5 @@
+import { Seat } from "./Seat";
+
 export interface SessionWithoutPlaceFormState {
   id?: number;
   date: string;
@@ -14,4 +16,5 @@ export interface SessionWithPlaceFormState {
   roomId: number;
   ticketsQtd: number;
   planId: number;
+  rows: number[];
 }

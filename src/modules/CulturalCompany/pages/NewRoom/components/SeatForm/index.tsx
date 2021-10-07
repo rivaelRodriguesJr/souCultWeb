@@ -5,6 +5,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Seat } from 'core/models/Seat';
 import SeatTable from '../SeatTable';
+import SelectTable from 'modules/CulturalCompany/pages/NewEvent/components/WithPlace/components/SelectTable';
 
 interface FormState {
   id?: number;
@@ -14,17 +15,17 @@ interface FormState {
 }
 
 interface Props {
-  seats: Seat[];
+  // seats: Seat[];
+  seats: any[];
   setSeats: (seats: Seat[]) => void;
 }
 
-
 const SeatForm = ({ seats, setSeats }: Props) => {
-  const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<FormState>();
+  const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm();
+  // const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<FormState>();
 
   const onSubmit = (formState: FormState) => {
     if (!formState?.id) {
-      console.log('add');
       const seat: Seat = formToSeat(formState);
       seat.id = new Date().getTime()
       setSeats([...seats, seat]);
@@ -55,7 +56,7 @@ const SeatForm = ({ seats, setSeats }: Props) => {
   const formToSeat = (formState: FormState) => {
     const seat: Seat = {
       ...formState
-    }
+    } as any
     return seat;
   }
 

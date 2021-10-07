@@ -2,8 +2,9 @@ import './styles.scss';
 
 import BackdropLoader from 'core/components/BackdropLoader';
 import BaseContainer from 'core/components/BaseContainer';
+import ControlledFormControl from 'core/components/ControlledFormControl';
 import { EventCategoriesRequest, EventCategory } from 'core/models/enums/EventCategory';
-import { DetailedEvent, DetailedEventRequest, Session } from 'core/models/Event';
+import { DetailedEvent, DetailedEventRequest, Session, SessionWithPlace } from 'core/models/Event';
 import { stateMock } from 'core/models/mocks/StateMock';
 import { makePrivateRequest } from 'core/utils/request';
 import { useEffect, useState } from 'react';
@@ -31,12 +32,16 @@ interface Params {
 }
 
 const NewEvent = () => {
-  const { handleSubmit, formState: { errors }, control, getValues, setValue,  } = useForm<FormState>();
+  const { handleSubmit, formState: { errors }, control, getValues, setValue, } = useForm<FormState>();
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const { eventId } = useParams<Params>();
 
-  const [sessions, setSessions] = useState<Session[]>([]);
+  // const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessionsWithPlace, setSessionsWithPlace] = useState<SessionWithPlace[]>([]);
+  const [sessionsWithoutPlace, setSessionsWithoutPlace] = useState<Session[]>([]);
+
+
   const [uploadedImgUrl, setUploadedImgUrl] = useState('');
   const [banner, setBanner] = useState('');
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
@@ -44,7 +49,7 @@ const NewEvent = () => {
 
 
   const isEditing = eventId !== 'create';
- 
+
   useEffect(() => {
     if (isEditing) {
       setIsLoading(true);
@@ -58,7 +63,12 @@ const NewEvent = () => {
           setValue('street_numbering', result.address.street_numbering);
           setValue('zip_code', result.address.zip_code);
           setValue('event_category_id', result.category.id);
-          setSessions(result.sessions || []);
+
+          setSessionsWithoutPlace(result.sessions.filter(session => typeof session.room === 'string'));
+          setSessionsWithPlace(result.sessions.filter(session => typeof session.room !== 'string').map(session => (session as any)));
+
+          result.sessions.forEach(session => console.log(typeof session.room));
+
           setBanner(result.link_banner || '');
         }).catch(() => {
           const msg = `Erro ao buscar evento.`;
@@ -73,7 +83,7 @@ const NewEvent = () => {
   useEffect(() => {
     setIsLoadingEventCategories(true);
     makePrivateRequest<EventCategoriesRequest>({ url: '/eventCategories' })
-      .then(({data}) => {
+      .then(({ data }) => {
         setEventCategories(data.result);
       })
       .catch(() => {
@@ -85,7 +95,7 @@ const NewEvent = () => {
   }, []);
 
   const onSubmit = () => {
-  
+
     const event: DetailedEvent = {
       address: {
         city: getValues('city'),
@@ -95,7 +105,7 @@ const NewEvent = () => {
       },
       description: getValues('description'),
       name: getValues('name'),
-      sessions,
+      sessions: [...sessionsWithPlace.map(session => (session as any))],
       status_id: 1,
       event_category_id: getValues('event_category_id'),
       banner_link: uploadedImgUrl || banner
@@ -133,23 +143,10 @@ const NewEvent = () => {
               <Col sm="6">
                 <Form.Group>
                   <Form.Label>Novo evento<i className="text-danger">*</i></Form.Label>
-                  <Controller
+                  <ControlledFormControl
                     name="name"
                     control={control}
-                    render={({ field, fieldState }) =>
-                      <>
-                        <Form.Control
-                          type="text"
-                          isInvalid={fieldState.invalid}
-                          {...field}
-                        />
-                        {errors[field.name] &&
-                          <Form.Control.Feedback type="invalid">
-                            {errors[field.name]?.message}
-                          </Form.Control.Feedback>
-                        }
-                      </>
-                    }
+                    errors={errors}
                     rules={{
                       required: 'Campo obrigatório'
                     }}
@@ -160,24 +157,10 @@ const NewEvent = () => {
               <Col sm="6">
                 <Form.Group>
                   <Form.Label>Endereço<i className="text-danger">*</i></Form.Label>
-                  <Controller
+                  <ControlledFormControl
                     name="street_numbering"
                     control={control}
-
-                    render={({ field, fieldState }) =>
-                      <>
-                        <Form.Control
-                          type="text"
-                          isInvalid={fieldState.invalid}
-                          {...field}
-                        />
-                        {errors[field.name] &&
-                          <Form.Control.Feedback type="invalid">
-                            {errors[field.name]?.message}
-                          </Form.Control.Feedback>
-                        }
-                      </>
-                    }
+                    errors={errors}
                     rules={{
                       required: 'Campo obrigatório'
                     }}
@@ -188,23 +171,10 @@ const NewEvent = () => {
               <Col sm="4">
                 <Form.Group>
                   <Form.Label>CEP<i className="text-danger">*</i></Form.Label>
-                  <Controller
+                  <ControlledFormControl
                     name="zip_code"
                     control={control}
-                    render={({ field, fieldState }) =>
-                      <>
-                        <Form.Control
-                          type="text"
-                          isInvalid={fieldState.invalid}
-                          {...field}
-                        />
-                        {errors[field.name] &&
-                          <Form.Control.Feedback type="invalid">
-                            {errors[field.name]?.message}
-                          </Form.Control.Feedback>
-                        }
-                      </>
-                    }
+                    errors={errors}
                     rules={{
                       required: 'Campo obrigatório'
                     }}
@@ -216,23 +186,10 @@ const NewEvent = () => {
               <Col sm="4">
                 <Form.Group>
                   <Form.Label>Cidade<i className="text-danger">*</i></Form.Label>
-                  <Controller
+                  <ControlledFormControl
                     name="city"
                     control={control}
-                    render={({ field, fieldState }) =>
-                      <>
-                        <Form.Control
-                          type="text"
-                          isInvalid={fieldState.invalid}
-                          {...field}
-                        />
-                        {errors[field.name] &&
-                          <Form.Control.Feedback type="invalid">
-                            {errors[field.name]?.message}
-                          </Form.Control.Feedback>
-                        }
-                      </>
-                    }
+                    errors={errors}
                     rules={{
                       required: 'Campo obrigatório'
                     }}
@@ -307,7 +264,7 @@ const NewEvent = () => {
                   {isLoadingEventCategories && (
                     <Spinner className="ml-2" animation="border" size="sm" />
                   )}
-                  
+
                   <Controller
                     name="event_category_id"
                     control={control}
@@ -339,7 +296,7 @@ const NewEvent = () => {
               </Col>
 
               <Col sm="6">
-                <div style={{marginTop: '1.75rem'}}>
+                <div style={{ marginTop: '1.75rem' }}>
                   <ImageUpload
                     text="Adicionar Banner"
                     image={banner}
@@ -359,9 +316,9 @@ const NewEvent = () => {
             <Tab eventKey="semLugar" title="Sem lugar marcado">
               <TabContainer>
                 <TabContent>
-                  <WithoutPlace 
-                    sessions={sessions}
-                    setSessions={setSessions}
+                  <WithoutPlace
+                    sessions={sessionsWithoutPlace}
+                    setSessions={setSessionsWithoutPlace}
                   />
                 </TabContent>
               </TabContainer>

@@ -63,7 +63,7 @@ const NewRoom = () => {
       name: getValues('name'),
       image_link: uploadedImgUrl || image,
       seats
-    };
+    } as any;
 
     setIsLoading(true);
     makePrivateRequest({

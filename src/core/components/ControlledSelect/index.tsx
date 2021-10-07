@@ -1,25 +1,18 @@
-
-import { ChangeEventHandler } from 'react';
 import { Form } from 'react-bootstrap';
-import { Control, Controller, DeepMap, FieldError, RegisterOptions } from 'react-hook-form';
-
-type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+import { Controller, DeepMap, FieldError, FieldPath, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface Value {
   key: any;
   value: any;
 }
 
-interface Props {
-  name: string;
-  control: Control<any>;
+interface ControlledSelectProps<TFieldValues, TName extends FieldPath<TFieldValues>> extends UseControllerProps<TFieldValues, TName> {
   errors: DeepMap<any, FieldError>;
-  rules: Omit<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs'>;
   values: Value[];
-  onChange?: ChangeEventHandler<FormControlElement>;
+  onChange?: (value: string) => void;
 }
 
-const ControlledSelect = ({ name, control, errors, rules, values = [], onChange = () => {}}: Props) => {
+const ControlledSelect = <TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>>({ name, control, errors, rules, values = [], onChange = () => {}}: ControlledSelectProps<TFieldValues, TName>) => {
   return (
     <Controller
       name={name}
@@ -29,8 +22,11 @@ const ControlledSelect = ({ name, control, errors, rules, values = [], onChange 
           <Form.Control
             as="select"
             isInvalid={fieldState.invalid}
-            {...field}
-            onChange={onChange}
+            onChange={ev => {
+              onChange(ev.target.value);
+              field.onChange(ev);
+            }}
+            value={field.value as any}
           >
             <option value={-1}>Selecione</option>
             {values.map(v => (

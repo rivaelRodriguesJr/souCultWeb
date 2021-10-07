@@ -1,14 +1,11 @@
+import { Place } from "./Place";
+
 export interface Event {
   id: number,
   name: string;
   tickets_qtd: number;
   status: string;
   place: Place;
-}
-
-export interface Place {
-  city: string;
-  state: string;
 }
 
 export interface EventsPaged {
@@ -27,9 +24,24 @@ export interface Session {
   id?: number;
   ticket_type: number;
   moment: Date;
-  room: string;
   quantity_tickets: number;
   id_plan: number;
+  room: string
+}
+
+interface Room {
+    id: number,
+    name?: string;
+    seats: number[];
+}
+
+export interface SessionWithPlace {
+  id?: number;
+  ticket_type: number;
+  moment: Date;
+  quantity_tickets: number;
+  id_plan: number;
+  room: Room;
 }
 
 export interface DetailedEvent {
@@ -65,15 +77,6 @@ export interface DetailedEventRequest {
       created_at: Date;
       update_at: Date;
     };
-    sessions: {
-      id: number;
-      ticket_type: number;
-      moment: Date;
-      room: string;
-      quantity_tickets: number;
-      id_plan: number;
-      created_at: Date;
-      update_at: Date;
-    } [];
+    sessions: Session [];
   }
 }
