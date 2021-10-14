@@ -1,4 +1,3 @@
-import { Area } from 'core/models/Area';
 import { useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
@@ -7,10 +6,10 @@ import { Column, useRowSelect, useTable } from 'react-table';
 export interface TableRowFormat {
   id: number;
   row: string;
+  areaId: number;
   area: string;
   quantity: number;
 }
-
 
 const columns: Column<TableRowFormat>[] = [
   {
@@ -68,6 +67,7 @@ const SelectTable = ({ seats: data = [], selectedSeats = [], setSelectedSeats }:
     if (!selectedFlatRows.every((val, index) => val.original.id === selectedSeats[index])) {
       return;
     }
+    console.log({tablerows: rows, selectedSeats});
     rows.forEach(({ id, original }) => {
       toggleRowSelected(id, selectedSeats.some(selectedSeat => selectedSeat === original.id));
     });
@@ -75,9 +75,6 @@ const SelectTable = ({ seats: data = [], selectedSeats = [], setSelectedSeats }:
   }, [rows, selectedSeats, toggleRowSelected]);
 
   useEffect(() => {
-    // if(!selectedFlatRows.every((val, index) => val.original.id === selectedSeats[index].id)){
-    //   return;
-    // }
     setSelectedSeats(selectedFlatRows.map(row => row.original.id));
   }, [selectedFlatRows, setSelectedSeats]);
 

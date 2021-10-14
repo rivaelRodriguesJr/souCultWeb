@@ -12,19 +12,34 @@ import { Controller, useForm } from 'react-hook-form';
 
 import StandardTable from '../Table';
 import ControlledFormControl from 'core/components/ControlledFormControl';
+import { EventRoomPost, EventSessionPost } from 'core/models/EventPost';
+import SessionTable from '../SessionTable';
 
 interface WithoutPlaceProps {
-  sessions: Session[];
-  setSessions: (sessions: Session[]) => void;
+  sessions: EventSessionPost[];
+  setSessions: (sessions: EventSessionPost[]) => void;
 }
 
 const WithoutPlace = ({ sessions, setSessions }: WithoutPlaceProps) => {
 
   const { handleSubmit, formState: { errors }, control, getValues, reset, setValue } = useForm<SessionWithoutPlaceFormState>();
 
+
+  const formToSession = (formState: SessionWithoutPlaceFormState): EventSessionPost => {
+    const momentDate: Date = moment(`${formState.date} ${formState.time}`, 'YYYY-MM-DD HH:mm').toDate();
+    return {
+      id: formState.id,
+      id_plan: formState.planId,
+      moment: momentDate,
+      quantity_tickets: formState.ticketsQtd,
+      room: formState.room,
+      ticket_type: formState.planId,
+    }
+  };
+
   const onSubmit = (formState: SessionWithoutPlaceFormState) => {
     if (!formState?.id) {
-      const session: Session = formToSession(formState);
+      const session: EventSessionPost = formToSession(formState);
       session.id = new Date().getTime()
       setSessions([...sessions, session]);
     } else {
@@ -35,20 +50,8 @@ const WithoutPlace = ({ sessions, setSessions }: WithoutPlaceProps) => {
     reset();
   }
 
-  const formToSession = (formState: SessionWithoutPlaceFormState): Session => {
-    const momentDate: Date = moment(`${formState.date} ${formState.time}`, 'YYYY-MM-DD HH:mm').toDate();
-    return {
-      id: formState.id,
-      id_plan: formState.planId,
-      moment: momentDate,
-      quantity_tickets: formState.ticketsQtd,
-      room: formState.room,
-      ticket_type: formState.planId,
-    }
-  }
-
   const handleSessionDelete = (sessionId: number) => {
-    const s: Session[] = sessions.slice();
+    const s: EventSessionPost[] = sessions.slice();
     const index = s.findIndex(session => Number(session.id) === Number(sessionId));
     s.splice(index, 1);
     setSessions(s);
@@ -65,43 +68,55 @@ const WithoutPlace = ({ sessions, setSessions }: WithoutPlaceProps) => {
       date = moment(session.moment).format('YYYY-MM-DD');
     }
 
-    setValue('id', session?.id);
+    let room = '';
+
+    if (session?.room && typeof session.room === 'string') {
+      room = session.room;
+    }
+
+    setValue('id', session?.id || 0);
     setValue('date', date);
     setValue('planId', session?.id_plan || -1);
-    setValue('room', session?.room || '');
+    setValue('room', room);
     setValue('ticketsQtd', session?.quantity_tickets || -1);
     setValue('time', time);
-  }
+  };
+
+  const getRoomName = (room: EventRoomPost | string): string => {
+    if (typeof room === 'string') return room;
+
+    return '-';
+  };
 
   return (
     <div className="mt-5">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
 
-        <Form.Group as={Col} sm="3">
-              <Form.Label>Data<i className="text-danger">*</i></Form.Label>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field, fieldState }) =>
-                  <>
-                    <Form.Control
-                      type="date"
-                      isInvalid={fieldState.invalid}
-                      {...field}
-                    />
-                    {errors[field.name] &&
-                      <Form.Control.Feedback type="invalid">
-                        {errors[field.name]?.message}
-                      </Form.Control.Feedback>
-                    }
-                  </>
-                }
-                rules={{
-                  required: 'Campo obrigatório'
-                }}
-              />
-            </Form.Group>
+          <Form.Group as={Col} sm="3">
+            <Form.Label>Data<i className="text-danger">*</i></Form.Label>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field, fieldState }) =>
+                <>
+                  <Form.Control
+                    type="date"
+                    isInvalid={fieldState.invalid}
+                    {...field}
+                  />
+                  {errors[field.name] &&
+                    <Form.Control.Feedback type="invalid">
+                      {errors[field.name]?.message}
+                    </Form.Control.Feedback>
+                  }
+                </>
+              }
+              rules={{
+                required: 'Campo obrigatório'
+              }}
+            />
+          </Form.Group>
 
           <Form.Group as={Col} sm="3">
             <Form.Label>Horário<i className="text-danger">*</i></Form.Label>
@@ -221,11 +236,19 @@ const WithoutPlace = ({ sessions, setSessions }: WithoutPlaceProps) => {
           </Col>
         </Row>
 
-        <StandardTable
-          sessions={sessions}
+        <SessionTable
+          sessions={sessions.map(session => {
+            return {
+              id: session.id,
+              id_plan: session.id_plan,
+              moment: session.moment,
+              quantity_tickets: session.quantity_tickets,
+              room: getRoomName(session.room),
+            };
+          })}
           plans={plans}
-          handleDelete={handleSessionDelete}
           handleEdit={handleSessionEdit}
+          handleDelete={console.log}
         />
       </Form>
     </div>

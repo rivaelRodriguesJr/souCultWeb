@@ -1,9 +1,8 @@
 import ControlledSelect from 'core/components/ControlledSelect';
 import { Area } from 'core/models/Area';
 import { plans } from 'core/models/enums/PlanType';
-import { SessionWithPlace } from 'core/models/Event';
+import { EventAreaPost, EventRoomPost, EventSessionPost } from 'core/models/EventPost';
 import { DetailedRoomResponse, Room, RoomsPaged } from 'core/models/Room';
-import { Seat } from 'core/models/Seat';
 import { SessionWithPlaceFormState } from 'core/models/Session';
 import { makePrivateRequest } from 'core/utils/request';
 import moment from 'moment';
@@ -11,26 +10,29 @@ import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import StandardTable from '../Table';
-import SeatTable from './components/SeatTable';
+import SessionTable from '../SessionTable';
 import SelectTable, { TableRowFormat } from './components/SelectTable';
 import './styles.scss';
 
-const WithPlace = () => {
+export interface WithPlaceProps {
+  sessions: EventSessionPost[];
+  setSessions: (sessions: EventSessionPost[]) => void;
+}
+
+const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
 
   const { handleSubmit, formState: { errors }, control, getValues, reset, setValue } = useForm<SessionWithPlaceFormState>();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
-  const [isLoadingPlans ] = useState(false);
-  const [seats, setSeats] = useState<Seat[]>([]);
-  
-  const [tableSeats, setTableSeats] = useState<Seat[]>([]);
+  const [isLoadingPlans] = useState(false);
+  const [tableRows, setTableRows] = useState<TableRowFormat[]>([]);
 
-  const [model, setModel] = useState<TableRowFormat[]>([]);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
 
   useEffect(() => {
     setIsLoadingRooms(true);
-    makePrivateRequest<RoomsPaged>({ url: '/room/many' }).then(response => {
+    makePrivateRequest<RoomsPaged>({ url: '/room/all' }).then(response => {
       setRooms(response.data.rooms);
     }).catch(() => {
       toast.error('Erro ao buscar salas.');
@@ -39,16 +41,16 @@ const WithPlace = () => {
     });
   }, []);
 
-  const onChangeRoom = (value: string) => {
+  const handleChangeRoom = (value: string) => {
     const roomId = Number(value);
-    setValue('rows', []);
-    setTableSeats([]);
+    // setValue('rows', []);
+    // setTableRows([]);
 
     if (roomId > 0) {
       setIsLoadingRooms(true);
       makePrivateRequest<DetailedRoomResponse>({ url: `/room/${roomId}` })
-        .then(({data: {entity}}) => {         
-          setModel(buildTableModel(entity.areas));
+        .then(({ data: { entity } }) => {
+          setTableRows(buildTableModel(entity.areas));
         }).catch(() => {
           const msg = `Erro ao buscar sala.`;
           toast.error(msg);
@@ -65,7 +67,8 @@ const WithPlace = () => {
       for (const row of area.rows) {
         models.push({
           id: row.id,
-          row: row.name, 
+          row: row.name,
+          areaId: area.id,
           area: area.name,
           quantity: row.number_accents
         });
@@ -75,45 +78,100 @@ const WithPlace = () => {
     return models;
   }
 
+  const formToSession = (formState: SessionWithPlaceFormState): EventSessionPost => {
+
+    const momentDate: Date = moment(`${formState.date} ${formState.time}`, 'YYYY-MM-DD HH:mm').toDate();
+
+    let ticketsQtd = 0;
+
+    const areas: EventAreaPost[] = [];
+    formState.rows.forEach(rowId => {
+      const row = tableRows.find(val => val.id === rowId);
+
+      if (row) {
+        ticketsQtd += row.quantity;
+
+        areas.push({
+          id_area: row?.areaId,
+          rows: [row?.id],
+        });
+      }
+    });
+
+    const room: EventRoomPost = {
+      id: formState.roomId,
+      areas
+    };
+
+    const eventSessionPost: EventSessionPost = {
+      id: formState.id,
+      id_plan: formState.planId,
+      moment: momentDate,
+      quantity_tickets: ticketsQtd,
+      room,
+      ticket_type: formState.planId
+    };
+
+    return eventSessionPost;
+  };
+
   const onSubmit = (formState: SessionWithPlaceFormState) => {
-    console.log(formState);
+    if (!formState?.id) {
+      const eventSessionPost = formToSession(formState);
+      eventSessionPost.id = new Date().getTime()
+      setSessions([...sessions, eventSessionPost]);
+    } else {
+      const index = sessions.findIndex(session => Number(session.id) === Number(formState.id));
+      sessions[index] = formToSession(formState);
+    }
 
-    // if (!formState?.id) {
-    //   const session: SessionWithPlace = formToSession(formState);
-    //   session.id = new Date().getTime()
-    //   setSessions([...sessions, session]);
-    // } else {
-    //   const index = sessions.findIndex(session => Number(session.id) === Number(formState.id));
-    //   sessions[index] = formToSession(formState);
-    // }
+    reset();
+    setTableRows([]);
+  };
 
-    // reset();
+  const getRoomName = (room: EventRoomPost | string): string => {
+    if (typeof room === 'string') return room;
+
+    const roomName = rooms.find(({ id }) => Number(id) === Number(room.id))?.name;
+    if (roomName) return roomName;
+
+    return '';
+  };
+
+  const handleSessionEdit = (sessionId: number) => {
+    const session = sessions.find(session => Number(session.id) === Number(sessionId));
+
+    let time = '';
+    let date = '';
+
+    if (session?.moment) {
+      time = moment(session.moment).format('HH:mm');
+      date = moment(session.moment).format('YYYY-MM-DD');
+    }
+
+    let roomId = 0;
+    const rows: number[] = [];
+
+    if(session?.room && typeof session.room !== 'string') {
+      if(session?.room?.id) roomId = session.room.id;
+
+      session.room.areas.forEach(area => rows.push(...area.rows));
+    }
+
+    console.log({rows});
+
+    setValue('id', session?.id || 0);
+    setValue('date', date);
+    setValue('planId', session?.id_plan || 0);
+    setValue('roomId', roomId);
+    setValue('rows', rows);
+    handleChangeRoom(roomId.toString());
+    setValue('time', time);
   }
 
-  // const formToSession = (formState: SessionWithPlaceFormState): SessionWithPlace => {
-  //   const seats: number[] = [];
-  //   for (const seat of formState.seats) {
-  //     if (seat.id) {
-  //       // seats.push(seat);
-  //     }
-  //   }
-
-  //   const roomName = rooms.find(room => Number(room.id) === Number(formState.roomId))?.name;
-
-  //   const momentDate: Date = moment(`${formState.date} ${formState.time}`, 'YYYY-MM-DD HH:mm').toDate();
-  //   return {
-  //     id: formState.id,
-  //     id_plan: formState.planId,
-  //     moment: momentDate,
-  //     quantity_tickets: formState.ticketsQtd,
-  //     room: {
-  //       id: formState.roomId,
-  //       // name: 
-  //       seats
-  //     },
-  //     ticket_type: formState.planId,
-  //   }
-  // }
+  useEffect(() => {
+    console.log(getValues('rows'));
+  }, [setValue])
 
   return (
     <div className="mt-5">
@@ -183,39 +241,9 @@ const WithPlace = () => {
                 required: 'Campo obrigatório',
                 validate: () => Number(getValues('roomId')) !== Number(-1) || 'Campo obrigatório'
               }}
-              onChange={onChangeRoom}
+              onChange={handleChangeRoom}
             />
           </Form.Group>
-
-          {/* <Col sm={3}>
-            <Form.Group>
-              <Form.Label>Assentos<i className="text-danger">*</i></Form.Label>
-              <Controller
-                name="seats"
-                control={control}
-                render={({ field, fieldState, formState }) =>
-                  <>
-                    <Select
-                      {...field}
-                      {...fieldState}
-                      {...formState}
-                      onChange={(value, action) => {
-                        setTableSeats(value as Seat[]);
-                        field.onChange(value, action);
-                      }}
-                      closeMenuOnSelect={false}
-                      options={seats || []}
-                      getOptionValue={op => String(op.id)}
-                      getOptionLabel={op => `Área: ${op.area} - Fileira: ${op.row}`}
-                      isMulti
-                      isDisabled={!getValues('roomId') || getValues('roomId') <= 0}
-                    />
-                  </>
-                }
-              />
-            </Form.Group>
-          </Col> */}
-
 
           <Form.Group as={Col} sm="3">
             <Form.Label>Plano<i className="text-danger">*</i></Form.Label>
@@ -233,10 +261,9 @@ const WithPlace = () => {
               }}
             />
           </Form.Group>
-          {tableSeats?.length && <SeatTable seats={tableSeats} />}
         </Row>
         <SelectTable
-          seats={model}
+          seats={tableRows}
           selectedSeats={getValues('rows')}
           setSelectedSeats={(data) => setValue('rows', data)}
         />
@@ -251,7 +278,22 @@ const WithPlace = () => {
         </Row>
 
 
-        <StandardTable sessions={[]} plans={[]} handleDelete={console.log} handleEdit={console.log} />
+        {/* <StandardTable sessions={[]} plans={[]} handleDelete={console.log} handleEdit={console.log} /> */}
+        <SessionTable
+          sessions={sessions.map(session => {
+            return {
+              id: session.id,
+              id_plan: session.id_plan,
+              moment: session.moment,
+              quantity_tickets: session.quantity_tickets,
+              room: getRoomName(session.room),
+            };
+          })}
+          plans={plans}
+          handleEdit={handleSessionEdit}
+          handleDelete={console.log}
+        />
+
       </Form>
     </div>
   );

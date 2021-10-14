@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import ImageUpload from './components/ImageUpload';
 import WithoutPlace from './components/WithoutPlace';
 import WithPlace from './components/WithPlace';
+import { EventPost, EventSessionPost } from 'core/models/EventPost';
 
 interface FormState {
   name: string;
@@ -37,16 +38,13 @@ const NewEvent = () => {
   const history = useHistory();
   const { eventId } = useParams<Params>();
 
-  // const [sessions, setSessions] = useState<Session[]>([]);
-  const [sessionsWithPlace, setSessionsWithPlace] = useState<SessionWithPlace[]>([]);
-  const [sessionsWithoutPlace, setSessionsWithoutPlace] = useState<Session[]>([]);
-
+  const [sessionsWithPlace, setSessionsWithPlace] = useState<EventSessionPost[]>([]);
+  const [sessionsWithoutPlace, setSessionsWithoutPlace] = useState<EventSessionPost[]>([]);
 
   const [uploadedImgUrl, setUploadedImgUrl] = useState('');
   const [banner, setBanner] = useState('');
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
   const [isLoadingEventCategories, setIsLoadingEventCategories] = useState(false);
-
 
   const isEditing = eventId !== 'create';
 
@@ -64,7 +62,7 @@ const NewEvent = () => {
           setValue('zip_code', result.address.zip_code);
           setValue('event_category_id', result.category.id);
 
-          setSessionsWithoutPlace(result.sessions.filter(session => typeof session.room === 'string'));
+          setSessionsWithoutPlace(result.sessions.filter(session => typeof session.room === 'string').map(session => (session as any)));
           setSessionsWithPlace(result.sessions.filter(session => typeof session.room !== 'string').map(session => (session as any)));
 
           result.sessions.forEach(session => console.log(typeof session.room));
@@ -96,7 +94,7 @@ const NewEvent = () => {
 
   const onSubmit = () => {
 
-    const event: DetailedEvent = {
+    const event: EventPost = {
       address: {
         city: getValues('city'),
         state: getValues('state'),
@@ -105,10 +103,10 @@ const NewEvent = () => {
       },
       description: getValues('description'),
       name: getValues('name'),
-      sessions: [...sessionsWithPlace.map(session => (session as any))],
+      sessions: [...sessionsWithPlace, ...sessionsWithoutPlace],
       status_id: 1,
       event_category_id: getValues('event_category_id'),
-      banner_link: uploadedImgUrl || banner
+      banner_link: uploadedImgUrl || banner,
     };
 
     setIsLoading(true);
@@ -324,7 +322,10 @@ const NewEvent = () => {
               </TabContainer>
             </Tab>
             <Tab eventKey="comLugar" title="Com lugar marcado">
-              <WithPlace />
+              <WithPlace 
+                sessions={sessionsWithPlace}
+                setSessions={setSessionsWithPlace}
+              />
             </Tab>
           </Tabs>
         </div>

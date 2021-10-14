@@ -1,7 +1,7 @@
 import { Seat } from "./Seat";
 
 export interface SessionWithoutPlaceFormState {
-  id?: number;
+  id: number;
   date: string;
   time: string;
   room: string;
@@ -10,7 +10,7 @@ export interface SessionWithoutPlaceFormState {
 }
 
 export interface SessionWithPlaceFormState {
-  id?: number;
+  id: number;
   date: string;
   time: string;
   roomId: number;
