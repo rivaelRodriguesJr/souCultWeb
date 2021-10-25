@@ -1,9 +1,11 @@
-import { Row } from "./Row";
+import AreaRow from "./AreaRow";
 
-export interface Area {
+interface Area {
   id: number;
   name: string;
-  created_at: any;
-  update_at: any;
-  rows: Row[];
+  rows: AreaRow[];
+  created_at?: Date;
+  update_at?: Date;
 }
+
+export default Area;

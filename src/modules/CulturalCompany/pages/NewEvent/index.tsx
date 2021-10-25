@@ -94,6 +94,13 @@ const NewEvent = () => {
 
   const onSubmit = () => {
 
+    const sessions = [...sessionsWithPlace, ...sessionsWithoutPlace];
+
+    sessions.forEach((session, index, array) => {
+      if (session?.id < 0)
+        array[index].id = undefined as any;
+    });
+
     const event: EventPost = {
       address: {
         city: getValues('city'),
@@ -322,7 +329,7 @@ const NewEvent = () => {
               </TabContainer>
             </Tab>
             <Tab eventKey="comLugar" title="Com lugar marcado">
-              <WithPlace 
+              <WithPlace
                 sessions={sessionsWithPlace}
                 setSessions={setSessionsWithPlace}
               />

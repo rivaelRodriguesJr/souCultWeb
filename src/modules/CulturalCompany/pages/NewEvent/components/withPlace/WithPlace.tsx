@@ -1,8 +1,8 @@
 import ControlledSelect from 'core/components/ControlledSelect';
-import { Area } from 'core/models/Area';
+import { Area } from 'core/models/AreaII';
 import { plans } from 'core/models/enums/PlanType';
 import { EventAreaPost, EventRoomPost, EventSessionPost } from 'core/models/EventPost';
-import { DetailedRoomResponse, Room, RoomsPaged } from 'core/models/Room';
+import { DetailedRoomResponse, Room, RoomsPaged } from 'core/models/RoomII';
 import { SessionWithPlaceFormState } from 'core/models/Session';
 import { makePrivateRequest } from 'core/utils/request';
 import moment from 'moment';
@@ -118,7 +118,7 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
   const onSubmit = (formState: SessionWithPlaceFormState) => {
     if (!formState?.id) {
       const eventSessionPost = formToSession(formState);
-      eventSessionPost.id = new Date().getTime()
+      eventSessionPost.id = new Date().getTime() * -1;
       setSessions([...sessions, eventSessionPost]);
     } else {
       const index = sessions.findIndex(session => Number(session.id) === Number(formState.id));
@@ -152,13 +152,13 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
     let roomId = 0;
     const rows: number[] = [];
 
-    if(session?.room && typeof session.room !== 'string') {
-      if(session?.room?.id) roomId = session.room.id;
+    if (session?.room && typeof session.room !== 'string') {
+      if (session?.room?.id) roomId = session.room.id;
 
       session.room.areas.forEach(area => rows.push(...area.rows));
     }
 
-    console.log({rows});
+    console.log({ rows });
 
     setValue('id', session?.id || 0);
     setValue('date', date);
@@ -167,11 +167,14 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
     setValue('rows', rows);
     handleChangeRoom(roomId.toString());
     setValue('time', time);
-  }
+  };
 
-  useEffect(() => {
-    console.log(getValues('rows'));
-  }, [setValue])
+  const handleSessionDelete = (sessionId: number) => {
+    const s: EventSessionPost[] = sessions.slice();
+    const index = s.findIndex(session => Number(session.id) === Number(sessionId));
+    s.splice(index, 1);
+    setSessions(s);
+  }
 
   return (
     <div className="mt-5">
@@ -291,7 +294,7 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
           })}
           plans={plans}
           handleEdit={handleSessionEdit}
-          handleDelete={console.log}
+          handleDelete={handleSessionDelete}
         />
 
       </Form>

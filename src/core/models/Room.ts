@@ -1,26 +1,12 @@
-import { Area } from './Area';
+import Area from "./Area";
 
-export interface Room {
+interface Room {
   id: number;
   name: string;
-  numberSeats: number;
-}
-
-export interface RoomsPaged {
-  rooms: Room[];
-  count: number;
-}
-
-export interface DetailedRoom  {
-  id?: number;
-  name: string;
-  image_link?: any;
+  image_link?: string;
+  areas: Area[];
   created_at?: Date;
   update_at?: Date;
-  areas: Area[];
-  seats: any;
 }
 
-export interface DetailedRoomResponse {
-  entity: DetailedRoom;
-}
+export default Room;

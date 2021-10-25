@@ -43,9 +43,9 @@ const SessionTable = ({ sessions, plans, handleDelete, handleEdit }: SessionTabl
               <td className="pt-4">{session.quantity_tickets}</td>
               <td className="pt-4">{plans.find(plan => Number(plan.id) === Number(session.id_plan))?.name}</td>
               <td>
-                <IconButton onClick={() => session?.id && handleEdit(session.id)}>
+                {/* <IconButton onClick={() => session?.id && handleEdit(session.id)}>
                   <EditIcon color="primary" />
-                </IconButton>
+                </IconButton> */}
 
                 <DeleteButton handleDelete={() => session?.id && handleDelete(session.id)} />
               </td>

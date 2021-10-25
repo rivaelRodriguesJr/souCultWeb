@@ -1,6 +1,6 @@
 import { Pagination } from '@material-ui/lab';
 import BaseContainer from "core/components/BaseContainer";
-import { Room, RoomsPaged } from 'core/models/Room';
+import { Room, RoomsPaged } from 'core/models/RoomII';
 import { makePrivateRequest } from 'core/utils/request';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,7 @@ const Rooms = () => {
     setRooms([]);
     setIsLoadingTable(true);
 
-    makePrivateRequest<RoomsPaged>({ method: 'GET', url: '/room/all', params })
+    makePrivateRequest<RoomsPaged>({ method: 'GET', url: '/room/many', params })
       .then(({ data }) => {
         const count = Math.ceil(data.count / paginationInfo.rowsPerPage);
         setPaginationInfo({ ...paginationInfo, count });

@@ -3,7 +3,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteButton from 'core/components/DeleteButton';
 import { SessionWithPlace } from 'core/models/Event';
 import { Plan } from 'core/models/Plan';
-import { Room } from 'core/models/Room';
+import { Room } from 'core/models/RoomII';
 import moment from 'moment';
 import { Table } from 'react-bootstrap';
 
