@@ -54,29 +54,4 @@ export interface DetailedEvent {
   banner_link: string;
 }
 
-export interface DetailedEventRequest {
-  result: {
-    id: number;
-    name: string;
-    description: string;
-    link_banner?: string;
-    status: {
-      id: number;
-      name: string;
-    };
-    category: {
-      id: number;
-      name: string;
-    };
-    address: {
-      id: number;
-      street_numbering: string;
-      zip_code: string;
-      city: string;
-      state: string;
-      created_at: Date;
-      update_at: Date;
-    };
-    sessions: Session [];
-  }
-}
+

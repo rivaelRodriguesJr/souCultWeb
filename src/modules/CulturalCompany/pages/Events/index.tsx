@@ -42,8 +42,6 @@ const Events = () => {
       .then(({ data }) => {
         const count = Math.ceil(data.count / paginationInfo.rowsPerPage);
         setPaginationInfo({ ...paginationInfo, count });
-        console.log(data);
-
         setEvents(data.events);
       })
       .catch(console.error)

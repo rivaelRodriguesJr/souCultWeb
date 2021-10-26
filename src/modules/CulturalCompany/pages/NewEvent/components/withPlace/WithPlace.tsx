@@ -27,9 +27,6 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
   const [isLoadingPlans] = useState(false);
   const [tableRows, setTableRows] = useState<TableRowFormat[]>([]);
 
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-
-
   useEffect(() => {
     setIsLoadingRooms(true);
     makePrivateRequest<RoomsPaged>({ url: '/room/all' }).then(response => {
@@ -158,8 +155,6 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
       session.room.areas.forEach(area => rows.push(...area.rows));
     }
 
-    console.log({ rows });
-
     setValue('id', session?.id || 0);
     setValue('date', date);
     setValue('planId', session?.id_plan || 0);
@@ -280,8 +275,6 @@ const WithPlace = ({ sessions, setSessions }: WithPlaceProps) => {
           </Col>
         </Row>
 
-
-        {/* <StandardTable sessions={[]} plans={[]} handleDelete={console.log} handleEdit={console.log} /> */}
         <SessionTable
           sessions={sessions.map(session => {
             return {

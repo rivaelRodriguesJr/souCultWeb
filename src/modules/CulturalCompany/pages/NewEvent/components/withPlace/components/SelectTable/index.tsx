@@ -67,7 +67,6 @@ const SelectTable = ({ seats: data = [], selectedSeats = [], setSelectedSeats }:
     if (!selectedFlatRows.every((val, index) => val.original.id === selectedSeats[index])) {
       return;
     }
-    console.log({tablerows: rows, selectedSeats});
     rows.forEach(({ id, original }) => {
       toggleRowSelected(id, selectedSeats.some(selectedSeat => selectedSeat === original.id));
     });

@@ -67,11 +67,6 @@ const SelectTable = ({ seats: data, selectedSeatsIds, onSumbitSelectedSeats, set
     });
   }, [rows, selectedSeatsIds, toggleRowSelected]);
 
-  useEffect(() => {
-    console.log(selectedFlatRows.map(row => row.original));
-  }, [selectedFlatRows]);
-
-
   return (
     <>
       <Row>
