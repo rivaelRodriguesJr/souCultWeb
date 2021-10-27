@@ -61,17 +61,36 @@ const NewEvent = () => {
           setValue('zip_code', result.address.zip_code);
           setValue('event_category_id', result.category.id);
 
-          // setSessionsWithoutPlace(result.sessions.filter(session => typeof session.room === 'string').map(session => (session)));
-          // setSessionsWithPlace(result.sessions.filter(session => typeof session.room !== 'string').map(session => (session)));
-
-          setSessionsWithoutPlace([]);
-          setSessionsWithPlace([]);
+          const withPlace: EventSessionPost[] = [];
+          const withoutPlace: EventSessionPost[] = [];
 
           result.sessions.forEach(session => {
             if (session && typeof session.room === 'string' && session.room !== '') {
               setSessionsWithoutPlace([...sessionsWithoutPlace, session]);
+              withoutPlace.push(session)
+
             } else {
-              session.seatsSessionRooms.forEach(({ room }) => {
+              console.log({session});
+              // session.seatsSessionRooms.forEach(({ room }) => {
+                
+              //   const sessionWithPlace: EventSessionPost = {
+              //     ...session,
+              //     room: {
+              //       id: room.id,
+              //       areas: room.areas.map(area => ({
+              //         id_area: area.id,
+              //         name: area.name,
+              //         rows: area.rows.map(({ id }) => id)
+              //       }))
+              //     }
+              //   }
+
+              //   withPlace.push(sessionWithPlace);
+              // });
+
+              if(session.seatsSessionRooms.length) {
+                const { room } = session.seatsSessionRooms[0];
+
                 const sessionWithPlace: EventSessionPost = {
                   ...session,
                   room: {
@@ -84,10 +103,13 @@ const NewEvent = () => {
                   }
                 }
 
-                setSessionsWithPlace([...sessionsWithPlace, sessionWithPlace]);
-              });
+                withPlace.push(sessionWithPlace);
+              }
             }
           });
+
+          setSessionsWithPlace(withPlace);
+          setSessionsWithoutPlace(withoutPlace);
 
           setBanner(result.link_banner || '');
         }).catch(() => {
