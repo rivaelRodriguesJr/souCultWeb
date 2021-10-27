@@ -34,10 +34,7 @@ const MaterialForm = () => {
   const { handleSubmit, control } = useForm<FormState>();
 
   const onSubmit = (data: FormState) => {
-    // const user: User = { ...data, "user-type-id": 1 };
-    // console.log(data);
 
-    // makePrivateRequest({ method: 'PUT', url: '/users/4', data: user }).then(console.log);
   }
 
   return (

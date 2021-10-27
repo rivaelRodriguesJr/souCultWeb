@@ -1,8 +1,9 @@
 export interface Seat {
   id?: number;
-  area: string;
-  row: number;
-  quantity: number;
+  name: string;
+  area: any;
+  row: any;
+  quantity: any;
   created_at?: Date;
   update_at?: Date;
 }

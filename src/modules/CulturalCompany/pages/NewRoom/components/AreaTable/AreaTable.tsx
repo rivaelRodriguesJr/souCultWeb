@@ -1,16 +1,22 @@
 import { IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteButton from 'core/components/DeleteButton';
-import { Seat } from 'core/models/Seat';
 import { Table } from 'react-bootstrap';
 
-interface Props {
-  seats: Seat[];
+export interface AreaTableRowModel {
+  id: number;
+  area: string;
+  row: string;
+  seatsQtd: number;
+}
+
+interface AreaTableProps {
+  areaTableRows: AreaTableRowModel[];
   handleDelete: (seatId: number) => void;
   handleEdit: (seatId: number) => void;
 }
 
-const SeatTable = ({ seats, handleDelete, handleEdit }: Props) => {
+const AreaTable = ({ areaTableRows, handleDelete, handleEdit }: AreaTableProps) => {
 
   return (
 
@@ -24,17 +30,17 @@ const SeatTable = ({ seats, handleDelete, handleEdit }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {seats.map((seat, index) => (
+        {areaTableRows.map((tableRow, index) => (
           <tr key={index}>
-            <td>{seat.area}</td>
-            <td>{seat.row}</td>
-            <td>{seat.quantity}</td>
+            <td>{tableRow.area}</td>
+            <td>{tableRow.row}</td>
+            <td>{tableRow.seatsQtd}</td>
             <td>
-              <IconButton onClick={() => seat?.id && handleEdit(seat.id)}>
+              <IconButton onClick={() => tableRow?.id && handleEdit(tableRow.id)}>
                 <EditIcon color="primary" />
               </IconButton>
 
-              <DeleteButton handleDelete={() => seat?.id && handleDelete(seat.id)} />
+              <DeleteButton handleDelete={() => tableRow?.id && handleDelete(tableRow.id)} />
             </td>
           </tr>
         ))}
@@ -43,4 +49,4 @@ const SeatTable = ({ seats, handleDelete, handleEdit }: Props) => {
 
 }
 
-export default SeatTable;
+export default AreaTable;

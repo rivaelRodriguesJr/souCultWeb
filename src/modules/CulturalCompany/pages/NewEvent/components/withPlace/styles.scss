@@ -20,3 +20,17 @@
     margin: 0%;
     width: 100%;
 }
+
+.select__control {
+    height: 50px;
+    border-radius: 10px !important;
+    color: #263238;
+}
+
+.select__indicator-separator {
+display: none;
+}
+
+.select__placeholder {
+color: #9E9E9E;
+}

@@ -1,7 +1,7 @@
 import { CircularProgress, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteButton from 'core/components/DeleteButton';
-import { Room } from 'core/models/Room';
+import { Room } from 'core/models/RoomII';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './styles.scss';
