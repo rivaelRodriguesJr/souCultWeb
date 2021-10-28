@@ -38,7 +38,7 @@ const Events = () => {
     setEvents([]);
     setIsLoadingTable(true);
 
-    makePrivateRequest<EventsPaged>({ method: 'GET', url: '/event/all', params })
+    makePrivateRequest<EventsPaged>({ method: 'GET', url: '/event/filter', params })
       .then(({ data }) => {
         const count = Math.ceil(data.count / paginationInfo.rowsPerPage);
         setPaginationInfo({ ...paginationInfo, count });

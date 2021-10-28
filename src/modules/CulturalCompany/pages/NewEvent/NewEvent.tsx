@@ -1,9 +1,9 @@
 import BackdropLoader from 'core/components/BackdropLoader';
 import BaseContainer from 'core/components/BaseContainer';
 import ControlledFormControl from 'core/components/ControlledFormControl';
-import { EventCategoriesRequest, EventCategory } from 'core/models/enums/EventCategory';
 import { DetailedEventRequest } from 'core/models/DetailedEventRequest';
-import { EventPost, EventRoomPost, EventSessionPost } from 'core/models/EventPost';
+import { EventCategoriesRequest, EventCategory } from 'core/models/enums/EventCategory';
+import { EventPost, EventSessionPost } from 'core/models/EventPost';
 import { stateMock } from 'core/models/mocks/StateMock';
 import { makePrivateRequest } from 'core/utils/request';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import ImageUpload from './components/ImageUpload';
 import WithoutPlace from './components/WithoutPlace';
 import WithPlace from './components/WithPlace';
+import { EventStatusList } from 'core/models/enums/EventStatus';
 import './styles.scss';
 
 
@@ -25,6 +26,7 @@ interface FormState {
   zip_code: string;
   city: string;
   state: string;
+  status_id: number;
 }
 
 interface Params {
@@ -60,6 +62,7 @@ const NewEvent = () => {
           setValue('street_numbering', result.address.street_numbering);
           setValue('zip_code', result.address.zip_code);
           setValue('event_category_id', result.category.id);
+          setValue('status_id', result.status.id);
 
           const withPlace: EventSessionPost[] = [];
           const withoutPlace: EventSessionPost[] = [];
@@ -70,24 +73,6 @@ const NewEvent = () => {
               withoutPlace.push(session)
 
             } else {
-              console.log({session});
-              // session.seatsSessionRooms.forEach(({ room }) => {
-                
-              //   const sessionWithPlace: EventSessionPost = {
-              //     ...session,
-              //     room: {
-              //       id: room.id,
-              //       areas: room.areas.map(area => ({
-              //         id_area: area.id,
-              //         name: area.name,
-              //         rows: area.rows.map(({ id }) => id)
-              //       }))
-              //     }
-              //   }
-
-              //   withPlace.push(sessionWithPlace);
-              // });
-
               if(session.seatsSessionRooms.length) {
                 const { room } = session.seatsSessionRooms[0];
 
@@ -102,7 +87,6 @@ const NewEvent = () => {
                     }))
                   }
                 }
-
                 withPlace.push(sessionWithPlace);
               }
             }
@@ -156,7 +140,7 @@ const NewEvent = () => {
       description: getValues('description'),
       name: getValues('name'),
       sessions: [...sessionsWithPlace, ...sessionsWithoutPlace],
-      status_id: 1,
+      status_id: getValues('status_id'),
       event_category_id: getValues('event_category_id'),
       banner_link: uploadedImgUrl || banner,
     };
@@ -328,6 +312,40 @@ const NewEvent = () => {
                           <option value={-1}>Selecione</option>
                           {eventCategories.map(eventCategory => (
                             <option key={eventCategory.id} value={eventCategory.id}>{eventCategory.name}</option>
+                          ))}
+                        </Form.Control>
+                        {errors[field.name] &&
+                          <Form.Control.Feedback type="invalid">
+                            {errors[field.name]?.message}
+                          </Form.Control.Feedback>
+                        }
+                      </>
+                    }
+                    rules={{
+                      required: 'Campo obrigatório',
+                      validate: () => Number(getValues('event_category_id')) !== Number(-1) || 'Campo obrigatório'
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col sm="4">
+                <Form.Group>
+                  <Form.Label>Satus<i className="text-danger">*</i></Form.Label>
+
+                  <Controller
+                    name="status_id"
+                    control={control}
+                    render={({ field, fieldState }) =>
+                      <>
+                        <Form.Control
+                          as="select"
+                          isInvalid={fieldState.invalid}
+                          {...field}
+                        >
+                          <option value={-1}>Selecione</option>
+                          {EventStatusList.map(status => (
+                            <option key={status.id} value={status.id}>{status.name}</option>
                           ))}
                         </Form.Control>
                         {errors[field.name] &&
