@@ -19,7 +19,7 @@ const CheckIn = () => {
   };
 
   useEffect(() => {
-    validToken();
+    
   }, []);
 
   return (
