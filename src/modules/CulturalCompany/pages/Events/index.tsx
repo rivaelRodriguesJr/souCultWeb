@@ -4,7 +4,7 @@ import { Event, EventsPaged } from 'core/models/Event';
 import { makePrivateRequest } from 'core/utils/request';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Filter from "./components/Filter";
+import Filter, { EventFilterFormState } from "./components/Filter";
 import Table from "./components/Table";
 import './styles.scss';
 
@@ -14,7 +14,7 @@ interface PaginationInfo {
   rowsPerPage: number;
 }
 
-interface EventRequestHeaders {
+interface EventRequestHeaders extends EventFilterFormState {
   take: number;
   skip: number;
 }
@@ -29,10 +29,14 @@ const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoadingTable, setIsLoadingTable] = useState(false);
 
-  useEffect(() => {
+  const search = (data: EventFilterFormState = {}) => {
     const params: EventRequestHeaders = {
       take: paginationInfo.rowsPerPage,
-      skip: (paginationInfo.page - 1) * paginationInfo.rowsPerPage
+      skip: (paginationInfo.page - 1) * paginationInfo.rowsPerPage,
+      city: data.city,
+      nameEvent: data.nameEvent,
+      state: data.state, 
+      status: data.status,
     }
 
     setEvents([]);
@@ -46,6 +50,12 @@ const Events = () => {
       })
       .catch(console.error)
       .finally(() => setIsLoadingTable(false));
+
+  }
+
+
+  useEffect(() => {
+    search();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationInfo.page]);
 
@@ -55,7 +65,7 @@ const Events = () => {
 
   return (
     <BaseContainer title="Meus eventos">
-      <Filter />
+      <Filter onSubmit={search} />
       <div className="newOrder">
         <Link to="/cultural-company/events/create">+ Novo evento</Link>
       </div>
