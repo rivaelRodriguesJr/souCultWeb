@@ -46,7 +46,7 @@ const Users = () => {
 
     setProfile({
       "user-type-id": -1,
-      cpf: user.document_id,
+      cpf: user.document,
       email: user.username,
       name: user.name,
       password: '*******',
