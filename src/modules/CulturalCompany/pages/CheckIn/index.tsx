@@ -5,8 +5,23 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import './styles.scss';
+import { useEffect, useState } from 'react';
+import { makePrivateRequest } from "core/utils/request";
 
 const CheckIn = () => {
+  const [token, setToken] = useState(String);
+
+  async function validToken(){
+    makePrivateRequest({ method: 'GET', url: `token/${token}` })
+    .then(({ data }) => {
+      console.log(data);
+    })
+  };
+
+  useEffect(() => {
+    
+  }, []);
+
   return (
     <section>
 
