@@ -1,12 +1,13 @@
 import { Pagination } from '@material-ui/lab';
 import BaseContainer from "core/components/BaseContainer";
+import { makePrivateRequest } from "core/utils/request";
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import './styles.scss';
-import { useEffect, useState } from 'react';
-import { makePrivateRequest } from "core/utils/request";
+import { toast } from 'react-toastify';
 
 const CheckIn = () => {
   const [token, setToken] = useState(String);
@@ -15,7 +16,17 @@ const CheckIn = () => {
     makePrivateRequest({ method: 'GET', url: `token/${token}` })
     .then(({ data }) => {
       console.log(data);
+      if(data.isValidToken){
+        toast.success('Token validado com sucesso!');
+      }else{
+        toast.error('Token inválido!');
+      }
     })
+  };
+
+  function handleInputChange(ev:any){
+    console.log(ev);
+    setToken(ev.target.value);
   };
 
   useEffect(() => {
@@ -36,10 +47,10 @@ const CheckIn = () => {
               <Form.Label>Nº do token: </Form.Label>
             </Col>
             <Col>
-              <Form.Control type="text"></Form.Control>
+              <Form.Control type="text" onChange = {handleInputChange} value = {token}></Form.Control>
             </Col>
             <Col>
-              <Button id="validation-button" className="defaut-button">Validar</Button>
+              <Button id="validation-button" className="defaut-button" onClick = {validToken}>Validar</Button>
             </Col>
           </Form.Row>
           <hr className="base-container-divider" />
