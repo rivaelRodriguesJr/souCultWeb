@@ -149,14 +149,17 @@ const NewRoom = () => {
               onClick={() => history.goBack()}
             >Voltar</Button>
           </Col>
-          <Col sm="2">
-            <Button
-              type="button"
-              className="button"
-              variant="sea-blue-1"
-              onClick={() => handleSubmit(onSubmit)()}
-            >{`${isEditing ? 'Editar' : 'Criar'} sala`}</Button>
-          </Col>
+          {
+            !isEditing &&
+            <Col sm="2">
+              <Button
+                type="button"
+                className="button"
+                variant="sea-blue-1"
+                onClick={() => handleSubmit(onSubmit)()}
+              >Criar sala</Button>
+            </Col>
+          }
         </Row>
 
       </BaseContainer>
