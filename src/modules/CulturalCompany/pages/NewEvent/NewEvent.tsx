@@ -95,7 +95,7 @@ const NewEvent = () => {
           setSessionsWithPlace(withPlace);
           setSessionsWithoutPlace(withoutPlace);
 
-          setBanner(result.link_banner || '');
+          setBanner(result.banner_link || '');
         }).catch(() => {
           const msg = `Erro ao buscar evento.`;
           toast.error(msg);
@@ -366,7 +366,7 @@ const NewEvent = () => {
               <Col sm="6">
                 <div style={{ marginTop: '1.75rem' }}>
                   <ImageUpload
-                    text="Adicionar Banner"
+                    text={`${banner || uploadedImgUrl ? 'Alterar' : 'Adicionar'} Banner`}
                     image={banner}
                     onUploadSuccess={onUploadSuccess}
                   />

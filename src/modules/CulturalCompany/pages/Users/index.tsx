@@ -123,7 +123,7 @@ const Users = () => {
 
       <h1 className="h1-adm-page">Lista de usuários</h1>
 
-      <div id="user-list-div" className="user-list-div pb-3">
+      {/* <div id="user-list-div" className="user-list-div pb-3">
         <section id="search-adm-users container">
           <Form>
             <Form.Row>
@@ -147,10 +147,10 @@ const Users = () => {
             </Form.Row>
           </Form>
         </section>
-      </div>
+      </div> */}
 
       <section>
-        <div className="d-flex justify-content-end mt-5">
+        <div className="d-flex justify-content-end">
           <Link to="users/create" className="new-user-btn">+ Novo usuário</Link>
         </div>
       </section>
