@@ -54,4 +54,10 @@ export interface DetailedEvent {
   banner_link: string;
 }
 
-
+export interface CheckInObj {
+  scheduling_id: number,
+  scheduling_token: string;
+  scheduling_checkin_at: string;
+  event_name: string;
+  user_name: string;
+}
