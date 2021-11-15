@@ -90,11 +90,11 @@ const LoginModal = ({ show, onHide }: Props) => {
               placeholder="Senha"
               {...register('password', { required: "Campo obrigatório" })}
             />
-            <div className="invalid-feedback d-block">{errors.password?.message}</div>
+            <div className="invalid-feedback d-block mb-5">{errors.password?.message}</div>
 
-            <div className="login-form-forgot-password-container">
+            {/* <div className="login-form-forgot-password-container">
               <a href="#/forgot-password" className="login-form-forgot-password text-orange-1">Lembrar senha</a>
-            </div>
+            </div> */}
 
             <div className="row">
               <div className="col-6 login">
