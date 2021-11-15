@@ -1,9 +1,11 @@
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { CircularProgress, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { Event } from "core/models/Event";
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './styles.scss';
+
 
 interface Props {
   events: Event[];
@@ -21,20 +23,26 @@ const TableStandard = ({ events, isLoading }: Props) => {
             <th>Ingressos disponíveis</th>
             <th>Status</th>
             <th>Local</th>
+            <th>Avaliações</th>
             <th></th>
           </tr>
         </thead>
         <tbody className="tableBody">
-          {isLoading && 
-          <tr>
-            <td className="text-center" colSpan={4}><CircularProgress  color="primary"/></td>
-          </tr>}
+          {isLoading &&
+            <tr>
+              <td className="text-center" colSpan={4}><CircularProgress color="primary" /></td>
+            </tr>}
           {events.map((event, index) => (
             <tr key={index}>
               <td>{event?.name}</td>
               <td>{event?.tickets_qtd}</td>
               <td>{event?.status}</td>
               <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
+              <td>
+                <IconButton>
+                  <StarBorderIcon fontSize="small" />
+                </IconButton>
+              </td>
               <td>
                 <Link
                   to={`/cultural-company/events/${event.id}`}
