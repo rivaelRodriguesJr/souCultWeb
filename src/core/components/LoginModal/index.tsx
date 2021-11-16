@@ -108,6 +108,7 @@ const LoginModal = ({ show, onHide }: Props) => {
               <div className="col-6 register">
                 <Link
                   to="/home/register"
+                  onClick={onHide}
                   type="button"
                   className="btn btn-gray login-form-button"
                 >Requisitar cadastro</Link>
