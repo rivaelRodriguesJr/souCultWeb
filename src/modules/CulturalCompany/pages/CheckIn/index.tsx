@@ -52,7 +52,7 @@ const CheckIn = () => {
     .then(({ data }) => {
       const count = Math.ceil(data.length / paginationInfo.rowsPerPage);
       setPaginationInfo({ ...paginationInfo, count });
-      setCheckIns(data);
+      setCheckIns(data[0]);
     })
     .catch(console.error)
     .finally(() => setIsLoadingTable(false));
@@ -111,13 +111,6 @@ const CheckIn = () => {
           isLoading={isLoadingTable}
           checkIns={checkIns}
         ></Table>
-        <div className="pager">
-          <Pagination
-            count={paginationInfo.count}
-            page={paginationInfo.page}
-            onChange={handleChangePage}
-        />
-        </div>
       </section>
 
     </section>
