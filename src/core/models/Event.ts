@@ -4,6 +4,7 @@ export interface Event {
   id: number,
   name: string;
   tickets_qtd: number;
+  total_used: number;
   status: string;
   place: Place;
 }
