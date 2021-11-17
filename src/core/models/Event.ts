@@ -30,9 +30,9 @@ export interface Session {
 }
 
 interface Room {
-    id: number,
-    name?: string;
-    seats: number[];
+  id: number,
+  name?: string;
+  seats: number[];
 }
 
 export interface SessionWithPlace {
@@ -53,5 +53,4 @@ export interface DetailedEvent {
   event_category_id: number;
   banner_link: string;
 }
-
 

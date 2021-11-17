@@ -5,6 +5,8 @@ import { Event } from "core/models/Event";
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './styles.scss';
+import Rating from 'core/components/Rating';
+import { useState } from 'react';
 
 
 interface Props {
@@ -14,8 +16,24 @@ interface Props {
 
 const TableStandard = ({ events, isLoading }: Props) => {
 
+  const [modalShow, setModalShow] = useState(false);
+  const [event, setEvent] = useState<Event>()
+
+  const handleRatingClick = (selectedEvent: Event) => {
+    setEvent(selectedEvent);
+    setModalShow(true);
+  }
+
+  const handleHideRatingModal = () => {
+    setEvent(undefined);
+    setModalShow(false);
+
+  }
+
   return (
     <div>
+      {event && <Rating show={modalShow} onHide={() => setModalShow(false)} event={event} />}
+
       <Table responsive className="table" >
         <thead className="tableHeader">
           <tr>
@@ -39,7 +57,7 @@ const TableStandard = ({ events, isLoading }: Props) => {
               <td>{event?.status}</td>
               <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
               <td>
-                <IconButton>
+                <IconButton onClick={() => handleRatingClick(event)}>
                   <StarBorderIcon fontSize="small" />
                 </IconButton>
               </td>

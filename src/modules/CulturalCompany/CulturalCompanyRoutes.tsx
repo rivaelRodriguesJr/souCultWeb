@@ -20,10 +20,10 @@ const CulturalCompanyRoutes = () => (
       <NewEvent />
     </Route>
     <Route path="/cultural-company/rooms" exact>
-      <Rooms/>
+      <Rooms />
     </Route>
     <Route path="/cultural-company/rooms/:roomId">
-      <NewRoom/>
+      <NewRoom />
     </Route>
     <Route path="/cultural-company/check-in">
       <CheckIn />
@@ -41,6 +41,7 @@ const CulturalCompanyRoutes = () => (
     <Route path="/cultural-company/users/:userId">
       <UsersForm />
     </Route>
+
   </Switch>
 )
 
