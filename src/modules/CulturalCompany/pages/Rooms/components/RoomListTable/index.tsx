@@ -1,5 +1,5 @@
 import { CircularProgress, IconButton } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteButton from 'core/components/DeleteButton';
 import { Room } from 'core/models/RoomII';
 import { Table } from 'react-bootstrap';
@@ -38,7 +38,7 @@ const RoomListTable = ({ rooms, isLoading, handleDelete }: Props) => {
                   to={`/cultural-company/rooms/${room.id}`}
                 >
                   <IconButton>
-                    <EditIcon color="primary" />
+                    <VisibilityIcon color="primary" />
                   </IconButton>
                 </Link>
                 <DeleteButton handleDelete={() => room?.id && handleDelete(room.id)} />

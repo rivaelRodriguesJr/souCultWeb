@@ -16,11 +16,11 @@ export interface AreaFormState {
 export interface AreaFormProps {
   areas: Area[];
   setAreas: (areas: Area[]) => void;
+  isEditing: boolean;
 }
 
-const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
+const AreaForm = ({ areas, setAreas, isEditing }: AreaFormProps): ReactElement => {
   const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<AreaFormState>();
-  // const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<FormState>();
 
   const onSubmit = (formState: AreaFormState) => {
     if (!formState?.id) {
@@ -28,8 +28,8 @@ const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
       area.id = new Date().getTime()
       setAreas([...areas, area]);
     } else {
-     const index = areas.findIndex(seat => Number(seat.id) === Number(formState.id));
-     areas[index] = fromFormState(formState);
+      const index = areas.findIndex(seat => Number(seat.id) === Number(formState.id));
+      areas[index] = fromFormState(formState);
     }
 
     reset();
@@ -43,11 +43,11 @@ const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
   }
 
   const handleAreaEdit = (seatId: number) => {
-      const area = areas.find(seat => Number(seat.id) === Number(seatId));
-      setValue('id', area?.id || 0);
-      setValue('area', area?.name || '');
-      setValue('row', area?.rows[0].name || '');
-      setValue('quantity', area?.rows[0].number_accents || 0);
+    const area = areas.find(seat => Number(seat.id) === Number(seatId));
+    setValue('id', area?.id || 0);
+    setValue('area', area?.name || '');
+    setValue('row', area?.rows[0].name || '');
+    setValue('quantity', area?.rows[0].number_accents || 0);
   }
 
   const fromFormState = (formState: AreaFormState): Area => {
@@ -67,7 +67,9 @@ const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
     <>
       <h6 className="room-title">Assentos</h6>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <h6>{!isEditing}</h6>
+
+      {!isEditing && (<Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Form.Group as={Col} sm="4">
             <Form.Label>Área<i className="text-danger">*</i></Form.Label>
@@ -154,7 +156,7 @@ const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
             >Adicionar sala</Button>
           </Col>
         </Row>
-      </Form>
+      </Form>)}
 
       <AreaTable
         areaTableRows={areas.map(area => {
@@ -165,6 +167,7 @@ const AreaForm = ({ areas, setAreas }: AreaFormProps): ReactElement => {
             seatsQtd: area.rows[0].number_accents,
           };
         })}
+        isEditing={isEditing}
         handleDelete={handleAreaDelete}
         handleEdit={handleAreaEdit}
       />
