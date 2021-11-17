@@ -1,6 +1,5 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarRateIcon from '@material-ui/icons/StarRate';
 import Modal from 'react-bootstrap/Modal';
 import entertainment from '../../assets/images/rating/TrainingOn.png';
@@ -23,14 +22,10 @@ const Rating = ({ show, onHide, event }: Props) => {
 
     const [ratings, setRatings] = useState(Object);
     const [msgs, setMsgs] = useState([]);
-    const [firstStar, setFirstStar] = useState(undefined)
-    const [secondStar, setSecondStar] = useState(undefined)
-    const [thirdStar, setThirdStar] = useState(undefined)
 
     async function eventRating() {
         makePrivateRequest({ method: 'GET', url: `event/${event.id}/evaluation` })
             .then(({ data }) => {
-                console.log("Retorno da API", data);
                 setRatings(data.media);
                 setMsgs(data.comets);
             })
