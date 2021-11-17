@@ -30,9 +30,9 @@ export interface Session {
 }
 
 interface Room {
-    id: number,
-    name?: string;
-    seats: number[];
+  id: number,
+  name?: string;
+  seats: number[];
 }
 
 export interface SessionWithPlace {
