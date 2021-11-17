@@ -138,7 +138,7 @@ const NewRoom = () => {
 
         </Form>
 
-        <AreaForm areas={areas} setAreas={setAreas} />
+        <AreaForm areas={areas} setAreas={setAreas} isEditing={isEditing} />
 
         <Row className="justify-content-end">
           <Col sm="2">

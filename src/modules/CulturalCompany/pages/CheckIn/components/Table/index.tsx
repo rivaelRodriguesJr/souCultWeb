@@ -1,9 +1,9 @@
-import { CircularProgress, IconButton } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { CheckInObj } from "core/models/Event";
+import moment from "moment";
+import { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import './styles.scss';
-import moment from "moment";
-import { useEffect, useState } from 'react';
 
 interface Props {
   checkIns: CheckInObj[];

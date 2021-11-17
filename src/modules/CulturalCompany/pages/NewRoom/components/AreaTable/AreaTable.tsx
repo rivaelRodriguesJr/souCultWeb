@@ -14,9 +14,10 @@ interface AreaTableProps {
   areaTableRows: AreaTableRowModel[];
   handleDelete: (seatId: number) => void;
   handleEdit: (seatId: number) => void;
+  isEditing: boolean;
 }
 
-const AreaTable = ({ areaTableRows, handleDelete, handleEdit }: AreaTableProps) => {
+const AreaTable = ({ areaTableRows, handleDelete, handleEdit, isEditing }: AreaTableProps) => {
 
   return (
 
@@ -26,7 +27,7 @@ const AreaTable = ({ areaTableRows, handleDelete, handleEdit }: AreaTableProps) 
           <th>Área</th>
           <th>Fileira</th>
           <th>Qtd. Assentos</th>
-          <th>Ações</th>
+          {!isEditing && <th>Ações</th>}
         </tr>
       </thead>
       <tbody>
@@ -35,13 +36,15 @@ const AreaTable = ({ areaTableRows, handleDelete, handleEdit }: AreaTableProps) 
             <td>{tableRow.area}</td>
             <td>{tableRow.row}</td>
             <td>{tableRow.seatsQtd}</td>
-            <td>
-              <IconButton onClick={() => tableRow?.id && handleEdit(tableRow.id)}>
-                <EditIcon color="primary" />
-              </IconButton>
+            {!isEditing &&
+              <td>
+                <IconButton onClick={() => tableRow?.id && handleEdit(tableRow.id)}>
+                  <EditIcon color="primary" />
+                </IconButton>
 
-              <DeleteButton handleDelete={() => tableRow?.id && handleDelete(tableRow.id)} />
-            </td>
+                <DeleteButton handleDelete={() => tableRow?.id && handleDelete(tableRow.id)} />
+              </td>
+            }
           </tr>
         ))}
       </tbody>
