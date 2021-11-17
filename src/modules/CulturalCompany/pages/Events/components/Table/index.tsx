@@ -18,7 +18,7 @@ const TableStandard = ({ events, isLoading }: Props) => {
         <thead className="tableHeader">
           <tr>
             <th>Nome do evento</th>
-            <th>Ingressos disponíveis</th>
+            <th>Ingressos agendados</th>
             <th>Status</th>
             <th>Local</th>
             <th></th>
@@ -32,7 +32,7 @@ const TableStandard = ({ events, isLoading }: Props) => {
           {events.map((event, index) => (
             <tr key={index}>
               <td>{event?.name}</td>
-              <td>{event?.tickets_qtd}</td>
+              <td>{`${event?.total_used}/${event?.tickets_qtd} `}</td>
               <td>{event?.status}</td>
               <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
               <td>
