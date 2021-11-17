@@ -12,7 +12,7 @@ export interface UserPayload {
   name: string;
   username: string;
   password: string;
-  document_id: string;
+  document: string;
   phone: string;
   company_type_id: number;
   company_id: number;
@@ -35,7 +35,7 @@ export interface UserDetails {
   name: string;
   username: string;
   password: string;
-  document_id: string;
+  document: string;
   phone: string;
 }
 

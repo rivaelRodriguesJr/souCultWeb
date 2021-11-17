@@ -3,87 +3,39 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Controller, useForm } from "react-hook-form";
 import './styles.scss';
 
-interface FormState {
-  name: string;
-  status_id: number;
-  city: string;
-  state: string;
+export interface EventFilterFormState {
+  nameEvent?: string;
+  status?: number;
+  city?: string;
+  state?: string;
 }
 
-const statusList: {id: number, name: string}[] = [
-  {id: 1, name: 'Ativo'},
-  {id: 2, name: 'Esgotado'},
-  {id: 3, name: 'Cancelado'}
-] 
+interface FilterProps {
+  onSubmit: (data: EventFilterFormState) => void;
+}
 
-const Filter = () => {
+const statusList: { id: number, name: string }[] = [
+  { id: 1, name: 'Ativo' },
+  { id: 2, name: 'Esgotado' },
+  { id: 3, name: 'Cancelado' }
+]
+
+const Filter = ({ onSubmit }: FilterProps) => {
   // const { handleSubmit, formState: { errors }, control, getValues, setValue, } = useForm<FormState>();
-  const { formState: { errors }, control, getValues } = useForm<FormState>();
+  const { handleSubmit, formState: { errors }, control, getValues, reset } = useForm<EventFilterFormState>();
+
+
 
   return (
     <div className="filter-container">
-      {/* <Form className="filter">
-        <Form.Group as={Row} className="row filter-row">
-          <Form.Label column sm="2">
-            Novo evento:
-          </Form.Label>
-          <Col sm="3">
-            <Form.Control type="text" />
-          </Col>
-
-          <Form.Label column sm="1">
-            Estado:
-          </Form.Label>
-          <Col sm="2">
-            <Form.Control as="select">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </Form.Control>
-          </Col>
-
-          <Form.Label column sm="2">
-            Cidade:
-          </Form.Label>
-          <Col sm="2">
-            <Form.Control type="text" />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="row filter-row">
-          <Form.Label column sm="2">
-            Status:
-          </Form.Label>
-          <Col sm="2">
-            <Form.Control as="select">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </Form.Control>
-          </Col>
-          <Col sm="2" />
-          <Col sm="2" />
-          <Col sm="2">
-            <Button className="button" variant="sea-blue-1">Buscar</Button>
-          </Col>
-          <Col sm="2">
-            <Button className="button" variant="orange-3">Limpar</Button>
-          </Col>
-        </Form.Group>
-      </Form> */}
-
-      <Form className="filter py-4">
+      <Form className="filter py-4" onSubmit={handleSubmit(onSubmit)}>
         <Row>
 
           <Col sm="4">
             <Form.Group>
               <Form.Label>Novo evento</Form.Label>
               <Controller
-                name="name"
+                name="nameEvent"
                 control={control}
                 render={({ field, fieldState }) =>
                   <>
@@ -100,7 +52,6 @@ const Filter = () => {
                   </>
                 }
                 rules={{
-                  required: 'Campo obrigatório'
                 }}
               />
             </Form.Group>
@@ -132,7 +83,6 @@ const Filter = () => {
                   </>
                 }
                 rules={{
-                  required: 'Campo obrigatório',
                   validate: () => Number(getValues('state')) !== Number(-1) || 'Campo obrigatório'
                 }}
               />
@@ -160,7 +110,6 @@ const Filter = () => {
                   </>
                 }
                 rules={{
-                  required: 'Campo obrigatório'
                 }}
               />
             </Form.Group>
@@ -170,7 +119,7 @@ const Filter = () => {
             <Form.Group>
               <Form.Label>Status</Form.Label>
               <Controller
-                name="status_id"
+                name="status"
                 control={control}
                 render={({ field, fieldState }) =>
                   <>
@@ -192,7 +141,6 @@ const Filter = () => {
                   </>
                 }
                 rules={{
-                  required: 'Campo obrigatório',
                   validate: () => Number(getValues('state')) !== Number(-1) || 'Campo obrigatório'
                 }}
               />
@@ -203,7 +151,15 @@ const Filter = () => {
 
         <Row className="justify-content-end">
           <Col sm="2">
-            <Button type="button" className="button" variant="orange-3">Limpar</Button>
+            <Button 
+              type="button"
+              className="button"
+              variant="orange-3"
+              onClick={() => {
+                reset();
+                onSubmit({});
+              }}
+            >Limpar</Button>
           </Col>
           <Col sm="2">
             <Button type="submit" className="button" variant="sea-blue-1">Buscar</Button>

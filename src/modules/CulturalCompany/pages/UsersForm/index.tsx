@@ -55,7 +55,7 @@ const UsersForm = () => {
         .then(response => {
           const { result } = response.data;
           setValue('name', result.name);
-          setValue('cpf', result.document_id);
+          setValue('cpf', result.document);
           setValue('email', result.username);
           setValue('password', '');
           setValue('passwordConfirm', '');
@@ -75,7 +75,7 @@ const UsersForm = () => {
     const user: UserPayload = {
       company_id: sessionData.user.company_id,
       company_type_id: sessionData.user.company_type_id,
-      document_id: data.cpf,
+      document: data.cpf,
       name: data.name,
       password: data.password,
       phone: data.phone,

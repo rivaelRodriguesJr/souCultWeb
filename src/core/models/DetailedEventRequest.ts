@@ -73,7 +73,7 @@ export interface Result {
   address: Address;
   sessions: Session[];
   company: Company;
-  link_banner: string;
+  banner_link: string;
 }
 
 export interface DetailedEventRequest {

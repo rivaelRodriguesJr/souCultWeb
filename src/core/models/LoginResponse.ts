@@ -3,7 +3,7 @@ export interface LoginResponse {
     id: number;
     name: string;
     username: string;
-    document_id: string;
+    document: string;
     phone: string;
     company_type_id: number;
     company_id: number;
