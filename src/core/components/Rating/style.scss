@@ -61,14 +61,28 @@
 }
 
 .rating-comments {
-    padding-top: 60px;
-    margin-top: 20px;
-    margin-left: 20px;
-    border-color:#0D9CA4;
-    border-width: 0.5;
-    border: solid;
-    width: 90%;
-    height: 30px;
+    // padding-top: 60px;
+    // margin-top: 20px;
+    // margin-left: 20px;
+    // border-color:#0D9CA4;
+    // border-width: 0.5;
+    // border: solid;
+    // width: 90%;
+    // height: 30px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-color: #0D9CA4;
+    border-top-color: #0D9CA4;
+    border-right-color: #0D9CA4;
+    border-left-color: #0D9CA4;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .scrollbar {
@@ -80,6 +94,7 @@
     margin-top: 25px; 
     margin-bottom: 25px;
     padding-bottom: 20px;
+    height: 40px;
 }
 
 .scrollbar-juicy-peach::-webkit-scrollbar-track {

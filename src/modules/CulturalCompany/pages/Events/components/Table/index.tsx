@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import Rating from 'core/components/Rating';
 import { useState } from 'react';
+import { makePrivateRequest } from "core/utils/request";
+import { useEffect } from 'react';
+import StarRateIcon from '@material-ui/icons/StarRate';
 
 
 interface Props {
@@ -29,6 +32,12 @@ const TableStandard = ({ events, isLoading }: Props) => {
     setModalShow(false);
 
   }
+  const [ratings, setRatings] = useState(Object);
+
+
+  useEffect(() => {
+  }, []);
+
 
   return (
     <div>
@@ -58,7 +67,7 @@ const TableStandard = ({ events, isLoading }: Props) => {
               <td>{`${event?.place?.city}/${event?.place?.state}`}</td>
               <td>
                 <IconButton onClick={() => handleRatingClick(event)}>
-                  <StarBorderIcon fontSize="small" />
+                  <StarRateIcon color="disabled" fontSize="small" />
                 </IconButton>
               </td>
               <td>
