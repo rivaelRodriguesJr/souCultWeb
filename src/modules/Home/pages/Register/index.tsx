@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { Link, useHistory } from 'react-router-dom';
 import './styles.scss';
 
 interface FormState {
@@ -18,15 +20,21 @@ interface FormState {
 
 const Register = () => {
 
-  const { handleSubmit, formState: { errors }, control, getValues, setValue, } = useForm<FormState>();
+  const { handleSubmit, formState: { errors }, control, reset } = useForm<FormState>();
+  const history = useHistory();
 
+  const onSubmit = () => {
+    toast.info("Agradecemos seu interesse! Assim que possível entraremos em contato.")
+    reset();
+    history.push('/home');
+  };
 
   return (
     <>
       <div className="registerContainer">
         <h5>Requisição de cadastro</h5>
 
-        <Form className="form">
+        <Form className="form" onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col sm="12">
               <Controller
@@ -40,6 +48,8 @@ const Register = () => {
                       type="radio"
                       isInvalid={fieldState.invalid}
                       {...field}
+                      checked
+                      value={1}
                     />
                     {errors[field.name] &&
                       <Form.Control.Feedback type="invalid">
@@ -52,7 +62,9 @@ const Register = () => {
                   required: 'Campo obrigatório'
                 }}
               />
-
+            </ Col>
+            <hr />
+            <Col sm="12">
               <Controller
                 name="companyType"
                 control={control}
@@ -64,6 +76,7 @@ const Register = () => {
                       type="radio"
                       isInvalid={fieldState.invalid}
                       {...field}
+                      value={2}
                     />
                     {errors[field.name] &&
                       <Form.Control.Feedback type="invalid">
@@ -76,14 +89,8 @@ const Register = () => {
                   required: 'Campo obrigatório'
                 }}
               />
-              <Form.Check
-                inline
-                label="Quero oferecer o convênio aos meus colaboradores"
-                name="group1"
-                type="radio"
-              />
-
-            </ Col>
+            </Col>
+            <hr />
             <Col sm="6">
               <Form.Group>
                 <Form.Label>Empresa<i className="text-danger">*</i></Form.Label>
@@ -300,22 +307,30 @@ const Register = () => {
               </Form.Group>
             </Col>
 
+            <Col sm="6">
+              <Button 
+                type="submit"
+                className="registerButton"
+                variant="sea-blue-1"
+              >Requisitar cadastro</Button>
+            </Col>
+
           </Row>
         </Form>
 
 
 
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
+        {/* <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
           <Form.Label column sm="2">
             Password
           </Form.Label>
           <Col sm="10">
             <Form.Control type="password" placeholder="Password" />
           </Col>
-        </Form.Group>
+        </Form.Group> */}
 
 
-        <Form className="form">
+        {/* <Form className="form">
 
           <Row className="registerRow">
             <Form.Label column sm="2">
@@ -376,7 +391,7 @@ const Register = () => {
           <Col sm="6">
             <Button className="registerButton" variant="sea-blue-1">Requisitar cadastro</Button>
           </Col>
-        </Form>
+        </Form> */}
 
       </div>
     </>
