@@ -19,13 +19,18 @@ interface Props {
 
 const Rating = ({ show, onHide, event }: Props) => {
 
-  const [ratings, setRatings] = useState(Object);
-  const [msgs, setMsgs] = useState([]);
+  const [ratings, setRatings] = useState({
+    media_score: "",
+    count_great_facilities: "",
+    excellent_entertainment: "",
+    comfortable_place: "",
+  });
+  const [msgs, setMsgs] = useState(new Array());
 
   async function eventRating() {
     makePrivateRequest({ method: 'GET', url: `event/${event.id}/evaluation` })
       .then(({ data }) => {
-        setRatings(data.media);
+        setRatings(data["media"]);
         setMsgs(data.comets);
       })
   };
@@ -36,7 +41,7 @@ const Rating = ({ show, onHide, event }: Props) => {
   const Body = () => (
     <>
       <div className="d-flex justify-content-end">
-        <i onClick={onHide} className="rating-modal-close-button">
+        <i onClick={() => window.location.reload()} className="rating-modal-close-button">
           <FontAwesomeIcon icon={faTimes} />
         </i>
       </div>
@@ -95,10 +100,10 @@ const Rating = ({ show, onHide, event }: Props) => {
 
         </div>
 
-        <div className="scrollbar scrollbar-juicy-peach">
-          <div className="rating-comments">
+        <div>
+          <div className="scrollbar scrollbar-juicy-peach">
             {msgs.map((comment: any) => {
-              return <text className="section-text">{comment}</text>
+              return <text className="section-text rating-comments">{comment.comment}</text>
             })}
 
             <text className="section-text">Evento sem comentários</text>
@@ -115,16 +120,16 @@ const Rating = ({ show, onHide, event }: Props) => {
 
   return (
     <>
-        <Modal
-          show={show}
-          onHide={onHide}
-          centered
-          backdrop={false}
-        >
-          <Modal.Body>
-            <Body />
-          </Modal.Body>
-        </Modal >
+      <Modal
+        show={show}
+        onHide={onHide}
+        centered
+        backdrop={false}
+      >
+        <Modal.Body>
+          <Body />
+        </Modal.Body>
+      </Modal >
     </>
   );
 }
